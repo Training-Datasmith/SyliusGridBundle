@@ -32,7 +32,7 @@ final class CallableFieldTypeTest extends TestCase
     protected function setUp(): void
     {
         $this->dataExtractorMock = $this->createMock(DataExtractorInterface::class);
-        $this->callableFieldType = new CallableFieldType($this->dataExtractorMock, new class(['my_service' => fn () => new class() {
+        $this->callableFieldType = new CallableFieldType($this->dataExtractorMock, new class (['my_service' => fn () => new class () {
             public function __invoke(string $value): string
             {
                 return strtoupper($value);

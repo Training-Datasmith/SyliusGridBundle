@@ -62,7 +62,7 @@ final class StringFieldTypeTest extends TestCase
         /** @var Field|MockObject $fieldMock */
         $fieldMock = $this->createMock(Field::class);
 
-        $data = new class() {
+        $data = new class () {
             public function __toString(): string
             {
                 return 'Value';
@@ -79,7 +79,7 @@ final class StringFieldTypeTest extends TestCase
         /** @var Field|MockObject $fieldMock */
         $fieldMock = $this->createMock(Field::class);
 
-        $data = new class() {
+        $data = new class () {
             public function __toString(): string
             {
                 return '<i class="book icon"></i>';

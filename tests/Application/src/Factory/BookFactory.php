@@ -16,7 +16,9 @@ namespace App\Factory;
 use App\Entity\Author;
 use App\Entity\Book;
 use App\Entity\Price;
+
 use function Zenstruck\Foundry\lazy;
+
 use Zenstruck\Foundry\Persistence\PersistentObjectFactory;
 use Zenstruck\Foundry\Persistence\Proxy;
 

@@ -30,7 +30,7 @@ final class FiltersCriteriaResolver implements FiltersCriteriaResolverInterface
     public function getCriteria(Grid $grid, Parameters $parameters): array
     {
         $defaultCriteria = array_map(
-            fn(Filter $filter) => $filter->getCriteria(),
+            fn (Filter $filter) => $filter->getCriteria(),
             $this->getFiltersDefaultCriteria($grid->getFilters()),
         );
 
@@ -47,6 +47,6 @@ final class FiltersCriteriaResolver implements FiltersCriteriaResolverInterface
      */
     private function getFiltersDefaultCriteria(array $filters): array
     {
-        return array_filter($filters, fn(Filter $filter) => null !== $filter->getCriteria());
+        return array_filter($filters, fn (Filter $filter) => null !== $filter->getCriteria());
     }
 }

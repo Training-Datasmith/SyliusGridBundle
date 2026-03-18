@@ -259,7 +259,7 @@ final class GridBuilder implements GridBuilderInterface
         }
 
         if (count($this->fields) > 0) {
-            $output['fields'] = array_map(fn(FieldInterface $field) => $field->toArray(), $this->fields);
+            $output['fields'] = array_map(fn (FieldInterface $field) => $field->toArray(), $this->fields);
         }
 
         if (count($this->sorting) > 0) {
