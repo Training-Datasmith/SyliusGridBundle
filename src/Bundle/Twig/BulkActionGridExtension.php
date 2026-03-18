@@ -19,11 +19,8 @@ use Twig\TwigFunction;
 
 final class BulkActionGridExtension extends AbstractExtension
 {
-    private BulkActionGridHelper $bulkActionGridHelper;
-
-    public function __construct(BulkActionGridHelper $bulkActionGridHelper)
+    public function __construct(private readonly BulkActionGridHelper $bulkActionGridHelper)
     {
-        $this->bulkActionGridHelper = $bulkActionGridHelper;
     }
 
     public function getFunctions(): array
@@ -31,7 +28,7 @@ final class BulkActionGridExtension extends AbstractExtension
         return [
             new TwigFunction(
                 'sylius_grid_render_bulk_action',
-                [$this->bulkActionGridHelper, 'renderBulkAction'],
+                $this->bulkActionGridHelper->renderBulkAction(...),
                 ['is_safe' => ['html']],
             ),
         ];

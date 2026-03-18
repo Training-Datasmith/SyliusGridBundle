@@ -44,18 +44,18 @@ final class <?= $class_name ?> extends AbstractGrid
                 foreach ($defaultFields as $fieldname => $type) {
                     if (in_array($type, ['STRING', 'TEXT'], true)) {
                         echo "                StringField::create('" . $fieldname . "')\n";
-                        echo "                    ->setLabel('" . ucfirst($fieldname) . "')\n";
+                        echo "                    ->setLabel('" . ucfirst((string) $fieldname) . "')\n";
                         echo "                    ->setSortable(true),\n";
                     }
 
-                    if (str_starts_with($type, 'DATE')) {
+                    if (str_starts_with((string) $type, 'DATE')) {
                         echo "                DateTimeField::create('" . $fieldname . "')\n";
-                        echo "                    ->setLabel('" . ucfirst($fieldname) . "'),\n";
+                        echo "                    ->setLabel('" . ucfirst((string) $fieldname) . "'),\n";
                     }
 
                     if (in_array($type, ['BOOLEAN', 'BOOL'], true)) {
                         echo "            //    TwigField::create('" . $fieldname . "', 'path/to/field/template.html.twig')\n";
-                        echo "            //        ->setLabel('" . ucfirst($fieldname) . "'),\n";
+                        echo "            //        ->setLabel('" . ucfirst((string) $fieldname) . "'),\n";
                     }
                 }
 ?>

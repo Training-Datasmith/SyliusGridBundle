@@ -16,9 +16,9 @@ namespace Sylius\Bundle\GridBundle\Storage;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
-final class SessionFilterStorage implements FilterStorageInterface
+final readonly class SessionFilterStorage implements FilterStorageInterface
 {
-    public function __construct(private readonly RequestStack $requestStack)
+    public function __construct(private RequestStack $requestStack)
     {
     }
 

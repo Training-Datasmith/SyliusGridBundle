@@ -14,13 +14,13 @@ declare(strict_types=1);
 namespace Sylius\Component\Grid\Attribute;
 
 #[\Attribute(\Attribute::TARGET_CLASS)]
-final class AsGrid
+final readonly class AsGrid
 {
     public function __construct(
-        public readonly ?string $resourceClass = null,
-        public readonly ?string $name = null,
-        public readonly ?string $buildMethod = null,
-        public readonly ?string $provider = null,
+        public ?string $resourceClass = null,
+        public ?string $name = null,
+        public ?string $buildMethod = null,
+        public ?string $provider = null,
     ) {
     }
 }

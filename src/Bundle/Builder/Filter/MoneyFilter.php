@@ -21,7 +21,7 @@ final class MoneyFilter
     {
         $filter = Filter::create($name, 'money');
 
-        $scale = $scale ?? GridMoneyFilter::DEFAULT_SCALE;
+        $scale ??= GridMoneyFilter::DEFAULT_SCALE;
 
         $filter->setFormOptions(['scale' => $scale]);
         $filter->setOptions([

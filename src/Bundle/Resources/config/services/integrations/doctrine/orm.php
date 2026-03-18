@@ -16,7 +16,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 use Sylius\Bundle\GridBundle\Doctrine\DBAL\Driver as DBALDriver;
 use Sylius\Bundle\GridBundle\Doctrine\ORM\Driver as ORMDriver;
 
-return static function (ContainerConfigurator $container) {
+return static function (ContainerConfigurator $container): void {
     $services = $container->services();
 
     $services->defaults()

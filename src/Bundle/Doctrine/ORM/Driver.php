@@ -21,7 +21,7 @@ use Sylius\Component\Grid\Data\DriverInterface;
 use Sylius\Component\Grid\Exception\RuntimeException;
 use Sylius\Component\Grid\Parameters;
 
-final class Driver implements DriverInterface
+final readonly class Driver implements DriverInterface
 {
     public const NAME = 'doctrine/orm';
 

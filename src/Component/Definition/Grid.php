@@ -17,39 +17,29 @@ use Webmozart\Assert\Assert;
 
 class Grid
 {
-    private string $code;
-
-    private string $driver;
-
-    /** @var array<string, mixed> */
-    private $driverConfiguration;
-
     /** @var string|callable|null */
     private $provider;
 
     /** @var array<string, string> */
-    private $sorting = [];
+    private array $sorting = [];
 
     /** @var array<int> */
-    private $limits = [];
+    private array $limits = [];
 
     /** @var array<string, Field> */
-    private $fields = [];
+    private array $fields = [];
 
     /** @var array<string, Filter> */
-    private $filters = [];
+    private array $filters = [];
 
     /** @var array<string, ActionGroup> */
-    private $actionGroups = [];
+    private array $actionGroups = [];
 
     /**
      * @param array<string, mixed> $driverConfiguration
      */
-    private function __construct(string $code, string $driver, array $driverConfiguration)
+    private function __construct(private readonly string $code, private readonly string $driver, private array $driverConfiguration)
     {
-        $this->code = $code;
-        $this->driver = $driver;
-        $this->driverConfiguration = $driverConfiguration;
     }
 
     /**
@@ -141,9 +131,7 @@ class Grid
      */
     public function getEnabledFields(): array
     {
-        return array_filter($this->getFields(), function (Field $field): bool {
-            return $field->isEnabled();
-        });
+        return array_filter($this->getFields(), fn(Field $field): bool => $field->isEnabled());
     }
 
     /**
@@ -200,10 +188,9 @@ class Grid
      */
     public function getEnabledActionGroups(): array
     {
-        return array_filter($this->getActionGroups(), function (ActionGroup $actionGroup): bool {
+        return array_filter($this->getActionGroups(), 
             // TODO: There's no `isEnabled` method on ActionGroup, so we assume all of them are enabled
-            return true;
-        });
+            fn(ActionGroup $actionGroup): bool => true);
     }
 
     /**
@@ -248,15 +235,11 @@ class Grid
     }
 
     /**
-     * @param string $groupName
-     *
      * @return Action[]
      */
-    public function getEnabledActions($groupName): array
+    public function getEnabledActions(string $groupName): array
     {
-        return array_filter($this->getActions($groupName), function (Action $action): bool {
-            return $action->isEnabled();
-        });
+        return array_filter($this->getActions($groupName), fn(Action $action): bool => $action->isEnabled());
     }
 
     public function hasActionGroup(string $name): bool
@@ -277,9 +260,7 @@ class Grid
      */
     public function getEnabledFilters(): array
     {
-        return array_filter($this->getFilters(), function (Filter $filter): bool {
-            return $filter->isEnabled();
-        });
+        return array_filter($this->getFilters(), fn(Filter $filter): bool => $filter->isEnabled());
     }
 
     /**

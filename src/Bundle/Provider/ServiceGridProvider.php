@@ -26,30 +26,10 @@ use Sylius\Component\Grid\Exception\UndefinedGridException;
 use Sylius\Component\Grid\Provider\GridProviderInterface;
 use Webmozart\Assert\Assert;
 
-final class ServiceGridProvider implements GridProviderInterface
+final readonly class ServiceGridProvider implements GridProviderInterface
 {
-    private ArrayToDefinitionConverterInterface $converter;
-
-    private GridRegistryInterface $gridRegistry;
-
-    private GridConfigurationExtenderInterface $gridConfigurationExtender;
-
-    private GridConfigurationRemovalsHandlerInterface $gridConfigurationRemovalsHandler;
-
-    private GridConfigurationSortingHandlerInterface $gridConfigurationSortingHandler;
-
-    public function __construct(
-        ArrayToDefinitionConverterInterface $converter,
-        GridRegistryInterface $gridRegistry,
-        GridConfigurationExtenderInterface $gridConfigurationExtender,
-        ?GridConfigurationRemovalsHandlerInterface $gridConfigurationRemovalsHandler = null,
-        ?GridConfigurationSortingHandlerInterface $gridConfigurationSortingHandler = null,
-    ) {
-        $this->converter = $converter;
-        $this->gridRegistry = $gridRegistry;
-        $this->gridConfigurationExtender = $gridConfigurationExtender;
-        $this->gridConfigurationRemovalsHandler = $gridConfigurationRemovalsHandler ?? new GridConfigurationRemovalsHandler();
-        $this->gridConfigurationSortingHandler = $gridConfigurationSortingHandler ?? new GridConfigurationSortingHandler();
+    public function __construct(private ArrayToDefinitionConverterInterface $converter, private GridRegistryInterface $gridRegistry, private GridConfigurationExtenderInterface $gridConfigurationExtender, private ?GridConfigurationRemovalsHandlerInterface $gridConfigurationRemovalsHandler = new GridConfigurationRemovalsHandler(), private ?GridConfigurationSortingHandlerInterface $gridConfigurationSortingHandler = new GridConfigurationSortingHandler())
+    {
     }
 
     public function get(string $code): Grid

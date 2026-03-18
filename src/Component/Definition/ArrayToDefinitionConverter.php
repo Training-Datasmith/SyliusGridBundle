@@ -51,15 +51,12 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
  *         options?: array<string, mixed>,
  *  }
  */
-final class ArrayToDefinitionConverter implements ArrayToDefinitionConverterInterface
+final readonly class ArrayToDefinitionConverter implements ArrayToDefinitionConverterInterface
 {
     public const EVENT_NAME = 'sylius.grid.%s';
 
-    private EventDispatcherInterface $eventDispatcher;
-
-    public function __construct(EventDispatcherInterface $eventDispatcher)
+    public function __construct(private EventDispatcherInterface $eventDispatcher)
     {
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**

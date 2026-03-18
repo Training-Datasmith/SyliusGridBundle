@@ -26,32 +26,11 @@ use Webmozart\Assert\Assert;
 
 final class ArrayGridProvider implements GridProviderInterface
 {
-    private ArrayToDefinitionConverterInterface $converter;
-
-    private GridConfigurationExtenderInterface $gridConfigurationExtender;
-
-    private GridConfigurationRemovalsHandlerInterface $gridConfigurationRemovalsHandler;
-
-    private GridConfigurationSortingHandlerInterface $gridConfigurationSortingHandler;
-
-    /** @var array<string, array<string, mixed>> */
-    private array $gridConfigurations;
-
     /**
      * @param array<string, array<string, mixed>> $gridConfigurations
      */
-    public function __construct(
-        ArrayToDefinitionConverterInterface $converter,
-        array $gridConfigurations,
-        ?GridConfigurationExtenderInterface $gridConfigurationExtender = null,
-        ?GridConfigurationRemovalsHandlerInterface $gridConfigurationRemovalsHandler = null,
-        ?GridConfigurationSortingHandlerInterface $gridConfigurationSortingHandler = null,
-    ) {
-        $this->converter = $converter;
-        $this->gridConfigurations = $gridConfigurations;
-        $this->gridConfigurationExtender = $gridConfigurationExtender ?? new GridConfigurationExtender();
-        $this->gridConfigurationRemovalsHandler = $gridConfigurationRemovalsHandler ?? new GridConfigurationRemovalsHandler();
-        $this->gridConfigurationSortingHandler = $gridConfigurationSortingHandler ?? new GridConfigurationSortingHandler();
+    public function __construct(private readonly ArrayToDefinitionConverterInterface $converter, private array $gridConfigurations, private readonly ?GridConfigurationExtenderInterface $gridConfigurationExtender = new GridConfigurationExtender(), private readonly ?GridConfigurationRemovalsHandlerInterface $gridConfigurationRemovalsHandler = new GridConfigurationRemovalsHandler(), private readonly ?GridConfigurationSortingHandlerInterface $gridConfigurationSortingHandler = new GridConfigurationSortingHandler())
+    {
     }
 
     public function get(string $code): Grid

@@ -23,8 +23,6 @@ final class GridBuilder implements GridBuilderInterface
 {
     private const DEFAULT_DRIVER_NAME = 'doctrine/orm';
 
-    private string $name;
-
     private string $driver;
 
     /** @var array<string, mixed> */
@@ -59,9 +57,8 @@ final class GridBuilder implements GridBuilderInterface
      */
     private array $removals = [];
 
-    private function __construct(string $name, ?string $resourceClass = null)
+    private function __construct(private readonly string $name, ?string $resourceClass = null)
     {
-        $this->name = $name;
         $this->driver = self::DEFAULT_DRIVER_NAME;
 
         if (null !== $resourceClass) {
@@ -262,7 +259,7 @@ final class GridBuilder implements GridBuilderInterface
         }
 
         if (count($this->fields) > 0) {
-            $output['fields'] = array_map(function (FieldInterface $field) { return $field->toArray(); }, $this->fields);
+            $output['fields'] = array_map(fn(FieldInterface $field) => $field->toArray(), $this->fields);
         }
 
         if (count($this->sorting) > 0) {

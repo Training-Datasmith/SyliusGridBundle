@@ -159,7 +159,7 @@ final class MakeGrid extends AbstractMaker
 
                 $propertyType = $property->getType()->getName();
 
-                $type = $propertyType ? \mb_strtoupper($propertyType) : null;
+                $type = $propertyType ? \mb_strtoupper((string) $propertyType) : null;
 
                 yield $property->getName() => $type;
             }
@@ -178,8 +178,10 @@ final class MakeGrid extends AbstractMaker
 
             $fieldName = $property['fieldName'];
             $type = $property['type'];
-
-            if (!\is_string($type) || !\is_string($fieldName)) {
+            if (!\is_string($type)) {
+                continue;
+            }
+            if (!\is_string($fieldName)) {
                 continue;
             }
 

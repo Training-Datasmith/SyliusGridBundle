@@ -15,10 +15,6 @@ namespace Sylius\Bundle\GridBundle\Builder\Field;
 
 final class Field implements FieldInterface
 {
-    private string $name;
-
-    private string $type;
-
     private ?string $path = null;
 
     private ?string $label = null;
@@ -33,10 +29,8 @@ final class Field implements FieldInterface
     /** @var array<string, mixed> */
     private array $options = [];
 
-    private function __construct(string $name, string $type)
+    private function __construct(private readonly string $name, private readonly string $type)
     {
-        $this->name = $name;
-        $this->type = $type;
     }
 
     public static function create(string $name, string $type): FieldInterface

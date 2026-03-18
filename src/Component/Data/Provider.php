@@ -18,7 +18,7 @@ use Sylius\Component\Grid\Definition\Grid;
 use Sylius\Component\Grid\Parameters;
 use Webmozart\Assert\Assert;
 
-final class Provider implements DataProviderInterface
+final readonly class Provider implements DataProviderInterface
 {
     public function __construct(
         private ContainerInterface $locator,

@@ -25,7 +25,7 @@ use Doctrine\ODM\PHPCR\Query\Builder\QueryBuilder;
  * Walks a Doctrine\Commons\Expr object graph and builds up a PHPCR-ODM
  * query using the (fluent) PHPCR-ODM query builder.
  */
-final class ExpressionVisitor
+final readonly class ExpressionVisitor
 {
     private QueryBuilder $queryBuilder;
 
@@ -80,18 +80,11 @@ final class ExpressionVisitor
      */
     public function walkCompositeExpression(CompositeExpression $expr, AbstractNode $parentNode)
     {
-        switch ($expr->getType()) {
-            case CompositeExpression::TYPE_AND:
-                $node = $parentNode->andX();
-
-                break;
-            case CompositeExpression::TYPE_OR:
-                $node = $parentNode->orX();
-
-                break;
-            default:
-                throw new \RuntimeException('Unknown composite: ' . $expr->getType());
-        }
+        $node = match ($expr->getType()) {
+            CompositeExpression::TYPE_AND => $parentNode->andX(),
+            CompositeExpression::TYPE_OR => $parentNode->orX(),
+            default => throw new \RuntimeException('Unknown composite: ' . $expr->getType()),
+        };
 
         $expressions = $expr->getExpressionList();
 
@@ -135,15 +128,11 @@ final class ExpressionVisitor
         if ($parentNode === null) {
             $parentNode = $this->queryBuilder->where();
         }
-
-        switch (true) {
-            case $expr instanceof Comparison:
-                return $this->walkComparison($expr, $parentNode);
-            case $expr instanceof CompositeExpression:
-                return $this->walkCompositeExpression($expr, $parentNode);
-        }
-
-        throw new \RuntimeException('Unknown Expression: ' . get_class($expr));
+        return match (true) {
+            $expr instanceof Comparison => $this->walkComparison($expr, $parentNode),
+            $expr instanceof CompositeExpression => $this->walkCompositeExpression($expr, $parentNode),
+            default => throw new \RuntimeException('Unknown Expression: ' . $expr::class),
+        };
     }
 
     private function getField(string $field): string

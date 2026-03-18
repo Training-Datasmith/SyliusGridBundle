@@ -115,15 +115,15 @@ final class StringFilter implements FilterInterface
             case self::TYPE_ENDS_WITH:
                 return $expressionBuilder->like($field, '%' . $value);
             case self::TYPE_IN:
-                return $expressionBuilder->in($field, array_map('trim', explode(',', (string) $value)));
+                return $expressionBuilder->in($field, array_map(trim(...), explode(',', (string) $value)));
             case self::TYPE_NOT_IN:
-                return $expressionBuilder->notIn($field, array_map('trim', explode(',', (string) $value)));
+                return $expressionBuilder->notIn($field, array_map(trim(...), explode(',', (string) $value)));
             case self::TYPE_MEMBER_OF:
                 if (method_exists($expressionBuilder, 'memberOf')) {
                     return $expressionBuilder->memberOf($value, $field);
                 }
 
-                throw new \InvalidArgumentException(sprintf('The memberOf method is not supported by %s', get_class($expressionBuilder)));
+                throw new \InvalidArgumentException(sprintf('The memberOf method is not supported by %s', $expressionBuilder::class));
             default:
                 throw new \InvalidArgumentException(sprintf('Could not get an expression for type "%s"!', $type));
         }

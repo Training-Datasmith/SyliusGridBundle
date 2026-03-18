@@ -18,11 +18,8 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 final class GridDefinitionConverterEvent extends Event
 {
-    private Grid $grid;
-
-    public function __construct(Grid $grid)
+    public function __construct(private readonly Grid $grid)
     {
-        $this->grid = $grid;
     }
 
     public function getGrid(): Grid

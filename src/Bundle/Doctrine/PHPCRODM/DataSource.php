@@ -22,7 +22,7 @@ use Sylius\Component\Grid\Parameters;
 
 @trigger_error(sprintf('The "%s" class is deprecated since Sylius 1.3. Doctrine MongoDB and PHPCR support will no longer be supported in Sylius 2.0.', DataSource::class), \E_USER_DEPRECATED);
 
-final class DataSource implements DataSourceInterface
+final readonly class DataSource implements DataSourceInterface
 {
     private QueryBuilder $queryBuilder;
 
@@ -36,21 +36,14 @@ final class DataSource implements DataSourceInterface
 
     public function restrict($expression, string $condition = DataSourceInterface::CONDITION_AND): void
     {
-        switch ($condition) {
-            case DataSourceInterface::CONDITION_AND:
-                $parentNode = $this->queryBuilder->andWhere();
-
-                break;
-            case DataSourceInterface::CONDITION_OR:
-                $parentNode = $this->queryBuilder->orWhere();
-
-                break;
-            default:
-                throw new \RuntimeException(sprintf(
-                    'Unknown restrict condition "%s"',
-                    $condition,
-                ));
-        }
+        $parentNode = match ($condition) {
+            DataSourceInterface::CONDITION_AND => $this->queryBuilder->andWhere(),
+            DataSourceInterface::CONDITION_OR => $this->queryBuilder->orWhere(),
+            default => throw new \RuntimeException(sprintf(
+                'Unknown restrict condition "%s"',
+                $condition,
+            )),
+        };
 
         $visitor = new ExpressionVisitor($this->queryBuilder);
         $visitor->dispatch($expression, $parentNode);
@@ -66,7 +59,7 @@ final class DataSource implements DataSourceInterface
         return $this->expressionBuilder;
     }
 
-    public function getData(Parameters $parameters)
+    public function getData(Parameters $parameters): \Pagerfanta\Pagerfanta
     {
         if (!class_exists(QueryAdapter::class)) {
             throw new \LogicException('Pagerfanta PHPCR-ODM adapter is not available. Try running "composer require pagerfanta/doctrine-phpcr-odm-adapter".');

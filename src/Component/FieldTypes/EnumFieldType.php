@@ -21,7 +21,7 @@ use Symfony\Contracts\Translation\TranslatableInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Webmozart\Assert\Assert;
 
-final class EnumFieldType implements FieldTypeInterface
+final readonly class EnumFieldType implements FieldTypeInterface
 {
     public function __construct(
         private DataExtractorInterface $dataExtractor,

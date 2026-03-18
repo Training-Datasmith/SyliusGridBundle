@@ -19,7 +19,7 @@ use Sylius\Component\Grid\Definition\Field;
 use Sylius\Component\Grid\Exception\UnexpectedValueException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-final class CallableFieldType implements FieldTypeInterface
+final readonly class CallableFieldType implements FieldTypeInterface
 {
     public function __construct(
         private DataExtractorInterface $dataExtractor,
@@ -46,7 +46,7 @@ final class CallableFieldType implements FieldTypeInterface
         $value = (string) $value;
 
         if ($options['htmlspecialchars']) {
-            $value = htmlspecialchars($value);
+            return htmlspecialchars($value);
         }
 
         return $value;

@@ -15,12 +15,8 @@ namespace Sylius\Component\Grid\Definition;
 
 class Filter
 {
-    private string $name;
-
-    private string $type;
-
     /** @var string|bool|null */
-    private $label;
+    private string $label;
 
     private bool $enabled = true;
 
@@ -41,12 +37,9 @@ class Filter
      */
     private int $position = 100;
 
-    private function __construct(string $name, string $type)
+    private function __construct(private readonly string $name, private readonly string $type)
     {
-        $this->name = $name;
-        $this->type = $type;
-
-        $this->label = $name;
+        $this->label = $this->name;
     }
 
     public static function fromNameAndType(string $name, string $type): self
@@ -153,7 +146,7 @@ class Filter
     /**
      * @param mixed $criteria
      */
-    public function setCriteria($criteria)
+    public function setCriteria($criteria): void
     {
         $this->criteria = $criteria;
     }

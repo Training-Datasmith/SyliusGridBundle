@@ -19,20 +19,17 @@ use Twig\TwigFunction;
 
 final class GridExtension extends AbstractExtension
 {
-    private GridHelper $gridHelper;
-
-    public function __construct(GridHelper $gridHelper)
+    public function __construct(private readonly GridHelper $gridHelper)
     {
-        $this->gridHelper = $gridHelper;
     }
 
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('sylius_grid_render', [$this->gridHelper, 'renderGrid'], ['is_safe' => ['html']]),
-            new TwigFunction('sylius_grid_render_field', [$this->gridHelper, 'renderField'], ['is_safe' => ['html']]),
-            new TwigFunction('sylius_grid_render_action', [$this->gridHelper, 'renderAction'], ['is_safe' => ['html']]),
-            new TwigFunction('sylius_grid_render_filter', [$this->gridHelper, 'renderFilter'], ['is_safe' => ['html']]),
+            new TwigFunction('sylius_grid_render', $this->gridHelper->renderGrid(...), ['is_safe' => ['html']]),
+            new TwigFunction('sylius_grid_render_field', $this->gridHelper->renderField(...), ['is_safe' => ['html']]),
+            new TwigFunction('sylius_grid_render_action', $this->gridHelper->renderAction(...), ['is_safe' => ['html']]),
+            new TwigFunction('sylius_grid_render_filter', $this->gridHelper->renderFilter(...), ['is_safe' => ['html']]),
         ];
     }
 }

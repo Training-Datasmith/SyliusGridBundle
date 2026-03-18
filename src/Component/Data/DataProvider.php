@@ -18,22 +18,10 @@ use Sylius\Component\Grid\Filtering\FiltersApplicatorInterface;
 use Sylius\Component\Grid\Parameters;
 use Sylius\Component\Grid\Sorting\SorterInterface;
 
-final class DataProvider implements DataProviderInterface
+final readonly class DataProvider implements DataProviderInterface
 {
-    private DataSourceProviderInterface $dataSourceProvider;
-
-    private FiltersApplicatorInterface $filtersApplicator;
-
-    private SorterInterface $sorter;
-
-    public function __construct(
-        DataSourceProviderInterface $dataSourceProvider,
-        FiltersApplicatorInterface $filtersApplicator,
-        SorterInterface $sorter,
-    ) {
-        $this->dataSourceProvider = $dataSourceProvider;
-        $this->filtersApplicator = $filtersApplicator;
-        $this->sorter = $sorter;
+    public function __construct(private DataSourceProviderInterface $dataSourceProvider, private FiltersApplicatorInterface $filtersApplicator, private SorterInterface $sorter)
+    {
     }
 
     public function getData(Grid $grid, Parameters $parameters)

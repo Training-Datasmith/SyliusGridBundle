@@ -20,7 +20,7 @@ use Sylius\Component\Grid\Parameters;
 
 @trigger_error(sprintf('The "%s" class is deprecated since Sylius 1.3. Doctrine MongoDB and PHPCR support will no longer be supported in Sylius 2.0.', Driver::class), \E_USER_DEPRECATED);
 
-final class Driver implements DriverInterface
+final readonly class Driver implements DriverInterface
 {
     /**
      * Driver name

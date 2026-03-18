@@ -22,7 +22,7 @@ use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\ORM\QueryBuilder;
 use Sylius\Component\Grid\Data\MemberOfAwareExpressionBuilderInterface;
 
-final class ExpressionBuilder implements MemberOfAwareExpressionBuilderInterface
+final readonly class ExpressionBuilder implements MemberOfAwareExpressionBuilderInterface
 {
     private QueryBuilder $queryBuilder;
 
@@ -198,7 +198,7 @@ final class ExpressionBuilder implements MemberOfAwareExpressionBuilderInterface
     private function adjustField(string $field): string
     {
         $rootAlias = $this->queryBuilder->getRootAliases()[0];
-        if (0 === strpos($field, $rootAlias . '.')) {
+        if (str_starts_with($field, $rootAlias . '.')) {
             return substr_replace($field, '', 0, strlen($rootAlias) + 1);
         }
 

@@ -16,7 +16,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 use Sylius\Bundle\GridBundle\Templating\Helper\BulkActionGridHelper;
 use Sylius\Bundle\GridBundle\Templating\Helper\GridHelper;
 
-return static function (ContainerConfigurator $container) {
+return static function (ContainerConfigurator $container): void {
     $services = $container->services();
 
     $services->defaults()

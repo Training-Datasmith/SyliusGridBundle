@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace Sylius\Component\Grid\Attribute;
 
 #[\Attribute(\Attribute::TARGET_CLASS)]
-final class AsField
+final readonly class AsField
 {
     public const SERVICE_TAG = 'sylius.grid_field';
 
     public function __construct(
-        public readonly ?string $type = null,
+        public ?string $type = null,
     ) {
     }
 }

@@ -55,7 +55,7 @@ use Sylius\Component\Grid\View\GridViewFactory;
 use Sylius\Component\Grid\View\GridViewFactoryInterface;
 use Sylius\Component\Registry\ServiceRegistry;
 
-return static function (ContainerConfigurator $container) {
+return static function (ContainerConfigurator $container): void {
     $services = $container->services();
     $container->import('services/field_types.php');
     $container->import('services/filters.php');

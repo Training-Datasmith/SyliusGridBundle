@@ -17,7 +17,7 @@ use Sylius\Component\Grid\Definition\Grid;
 use Sylius\Component\Grid\Parameters;
 use Sylius\Component\Registry\ServiceRegistryInterface;
 
-final class DataSourceProvider implements DataSourceProviderInterface
+final readonly class DataSourceProvider implements DataSourceProviderInterface
 {
     private ServiceRegistryInterface $driversRegistry;
 

@@ -32,7 +32,7 @@ use Sylius\Component\Grid\Filter\NumericRangeFilter;
 use Sylius\Component\Grid\Filter\SelectFilter;
 use Sylius\Component\Grid\Filter\StringFilter;
 
-return static function (ContainerConfigurator $container) {
+return static function (ContainerConfigurator $container): void {
     $services = $container->services();
 
     $services->defaults()

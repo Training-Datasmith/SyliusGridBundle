@@ -17,14 +17,11 @@ use Sylius\Bundle\GridBundle\Builder\Action\ActionInterface;
 
 final class ActionGroup implements ActionGroupInterface
 {
-    private string $name;
-
     /** @var array<string, ActionInterface> */
     private array $actions = [];
 
-    private function __construct(string $name)
+    private function __construct(private readonly string $name)
     {
-        $this->name = $name;
     }
 
     public static function create(string $name, ActionInterface ...$actions): ActionGroupInterface

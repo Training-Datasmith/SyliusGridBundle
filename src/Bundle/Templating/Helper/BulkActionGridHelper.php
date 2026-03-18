@@ -22,11 +22,8 @@ use Sylius\Component\Grid\View\GridView;
  */
 class BulkActionGridHelper
 {
-    private BulkActionGridRendererInterface $bulkActionGridRenderer;
-
-    public function __construct(BulkActionGridRendererInterface $bulkActionGridRenderer)
+    public function __construct(private readonly BulkActionGridRendererInterface $bulkActionGridRenderer)
     {
-        $this->bulkActionGridRenderer = $bulkActionGridRenderer;
     }
 
     /**

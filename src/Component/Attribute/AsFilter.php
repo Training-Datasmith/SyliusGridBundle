@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Sylius\Component\Grid\Attribute;
 
 #[\Attribute(\Attribute::TARGET_CLASS)]
-final class AsFilter
+final readonly class AsFilter
 {
     public const SERVICE_TAG = 'sylius.grid_filter';
 
@@ -22,9 +22,9 @@ final class AsFilter
      * @param class-string $formType The form type class name to use for filter rendering
      */
     public function __construct(
-        public readonly string $formType,
-        public readonly ?string $type = null,
-        public readonly ?string $template = null,
+        public string $formType,
+        public ?string $type = null,
+        public ?string $template = null,
     ) {
     }
 }

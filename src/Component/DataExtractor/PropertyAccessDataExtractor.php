@@ -16,7 +16,7 @@ namespace Sylius\Component\Grid\DataExtractor;
 use Sylius\Component\Grid\Definition\Field;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
-final class PropertyAccessDataExtractor implements DataExtractorInterface
+final readonly class PropertyAccessDataExtractor implements DataExtractorInterface
 {
     private PropertyAccessorInterface $propertyAccessor;
 

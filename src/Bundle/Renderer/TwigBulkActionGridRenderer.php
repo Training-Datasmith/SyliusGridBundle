@@ -20,18 +20,14 @@ use Twig\Environment;
 
 final class TwigBulkActionGridRenderer implements BulkActionGridRendererInterface
 {
-    private Environment $twig;
-
-    /** @var array<string, string> */
-    private array $bulkActionTemplates;
+    private readonly Environment $twig;
 
     /**
      * @param array<string, string> $bulkActionTemplates
      */
-    public function __construct(Environment $twig, array $bulkActionTemplates)
+    public function __construct(Environment $twig, private array $bulkActionTemplates)
     {
         $this->twig = $twig;
-        $this->bulkActionTemplates = $bulkActionTemplates;
     }
 
     public function renderBulkAction(GridViewInterface $gridView, Action $bulkAction, $data = null): string

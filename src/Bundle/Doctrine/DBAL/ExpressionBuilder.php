@@ -17,7 +17,7 @@ use Doctrine\DBAL\Query\Expression\CompositeExpression;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Sylius\Component\Grid\Data\ExpressionBuilderInterface;
 
-final class ExpressionBuilder implements ExpressionBuilderInterface
+final readonly class ExpressionBuilder implements ExpressionBuilderInterface
 {
     private QueryBuilder $queryBuilder;
 

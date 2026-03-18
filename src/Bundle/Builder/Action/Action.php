@@ -15,10 +15,6 @@ namespace Sylius\Bundle\GridBundle\Builder\Action;
 
 final class Action implements ActionInterface
 {
-    private string $name;
-
-    private string $type;
-
     private ?string $label = null;
 
     private ?bool $enabled = null;
@@ -32,10 +28,8 @@ final class Action implements ActionInterface
 
     private ?int $position = null;
 
-    private function __construct(string $name, string $type)
+    private function __construct(private readonly string $name, private readonly string $type)
     {
-        $this->name = $name;
-        $this->type = $type;
     }
 
     public static function create(string $name, string $type): ActionInterface

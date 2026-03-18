@@ -19,7 +19,7 @@ use Sylius\Bundle\GridBundle\Renderer\TwigGridRenderer;
 use Sylius\Bundle\GridBundle\Twig\BulkActionGridExtension;
 use Sylius\Bundle\GridBundle\Twig\GridExtension;
 
-return static function (ContainerConfigurator $container) {
+return static function (ContainerConfigurator $container): void {
     $services = $container->services();
     $container->import('twig/**');
 

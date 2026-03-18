@@ -21,16 +21,10 @@ use Sylius\Component\Grid\Validation\FieldValidatorInterface;
 use Sylius\Component\Grid\Validation\SortingParametersValidator;
 use Sylius\Component\Grid\Validation\SortingParametersValidatorInterface;
 
-final class Sorter implements SorterInterface
+final readonly class Sorter implements SorterInterface
 {
-    private SortingParametersValidatorInterface $sortingValidator;
-
-    private FieldValidatorInterface $fieldValidator;
-
-    public function __construct(?SortingParametersValidatorInterface $sortingValidator = null, ?FieldValidatorInterface $fieldValidator = null)
+    public function __construct(private ?SortingParametersValidatorInterface $sortingValidator = new SortingParametersValidator(), private ?FieldValidatorInterface $fieldValidator = new FieldValidator())
     {
-        $this->sortingValidator = $sortingValidator ?? new SortingParametersValidator();
-        $this->fieldValidator = $fieldValidator ?? new FieldValidator();
     }
 
     public function sort(DataSourceInterface $dataSource, Grid $grid, Parameters $parameters): void

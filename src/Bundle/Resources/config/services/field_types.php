@@ -18,7 +18,7 @@ use Sylius\Component\Grid\FieldTypes\DatetimeFieldType;
 use Sylius\Component\Grid\FieldTypes\EnumFieldType;
 use Sylius\Component\Grid\FieldTypes\StringFieldType;
 
-return static function (ContainerConfigurator $container) {
+return static function (ContainerConfigurator $container): void {
     $services = $container->services();
 
     $services->defaults()

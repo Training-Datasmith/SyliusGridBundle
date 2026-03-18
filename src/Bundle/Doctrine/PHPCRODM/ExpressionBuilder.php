@@ -24,10 +24,9 @@ use Doctrine\Common\Collections\ExpressionBuilder as CollectionsExpressionBuilde
  */
 final class ExpressionBuilder implements ExpressionBuilderInterface
 {
-    private CollectionsExpressionBuilder $expressionBuilder;
+    private readonly CollectionsExpressionBuilder $expressionBuilder;
 
-    /** @var array */
-    private $orderBys = [];
+    private array $orderBys = [];
 
     public function __construct(?CollectionsExpressionBuilder $expressionBuilder = null)
     {
@@ -114,12 +113,12 @@ final class ExpressionBuilder implements ExpressionBuilderInterface
         return new Comparison($field, ExtraComparison::NOT_CONTAINS, $pattern);
     }
 
-    public function orderBy(string $field, string $direction)
+    public function orderBy(string $field, string $direction): void
     {
         $this->orderBys = [$field => $direction];
     }
 
-    public function addOrderBy(string $field, string $direction)
+    public function addOrderBy(string $field, string $direction): void
     {
         $this->orderBys[$field] = $direction;
     }

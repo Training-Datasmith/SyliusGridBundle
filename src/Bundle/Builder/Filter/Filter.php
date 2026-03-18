@@ -15,10 +15,6 @@ namespace Sylius\Bundle\GridBundle\Builder\Filter;
 
 final class Filter implements FilterInterface
 {
-    private string $name;
-
-    private string $type;
-
     private string|bool|null $label = null;
 
     private ?bool $enabled = null;
@@ -36,10 +32,8 @@ final class Filter implements FilterInterface
 
     private mixed $defaultValue = null;
 
-    private function __construct(string $name, string $type)
+    private function __construct(private readonly string $name, private readonly string $type)
     {
-        $this->name = $name;
-        $this->type = $type;
     }
 
     public static function create(string $name, string $type): FilterInterface

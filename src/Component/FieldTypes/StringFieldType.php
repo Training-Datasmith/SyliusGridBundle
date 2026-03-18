@@ -17,13 +17,10 @@ use Sylius\Component\Grid\DataExtractor\DataExtractorInterface;
 use Sylius\Component\Grid\Definition\Field;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-final class StringFieldType implements FieldTypeInterface
+final readonly class StringFieldType implements FieldTypeInterface
 {
-    private DataExtractorInterface $dataExtractor;
-
-    public function __construct(DataExtractorInterface $dataExtractor)
+    public function __construct(private DataExtractorInterface $dataExtractor)
     {
-        $this->dataExtractor = $dataExtractor;
     }
 
     public function render(Field $field, mixed $data, array $options): string

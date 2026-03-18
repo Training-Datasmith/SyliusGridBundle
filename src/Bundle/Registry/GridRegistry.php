@@ -16,7 +16,7 @@ namespace Sylius\Bundle\GridBundle\Registry;
 use Sylius\Bundle\GridBundle\Grid\GridInterface;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 
-final class GridRegistry implements GridRegistryInterface
+final readonly class GridRegistry implements GridRegistryInterface
 {
     public function __construct(
         /** @var ServiceLocator<GridInterface> */

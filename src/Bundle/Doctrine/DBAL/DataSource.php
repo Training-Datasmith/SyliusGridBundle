@@ -21,7 +21,7 @@ use Sylius\Bundle\GridBundle\Doctrine\DataSourceInterface;
 use Sylius\Component\Grid\Data\ExpressionBuilderInterface;
 use Sylius\Component\Grid\Parameters;
 
-final class DataSource implements DataSourceInterface
+final readonly class DataSource implements DataSourceInterface
 {
     private QueryBuilder $queryBuilder;
 
@@ -60,7 +60,7 @@ final class DataSource implements DataSourceInterface
         return $this->expressionBuilder;
     }
 
-    public function getData(Parameters $parameters)
+    public function getData(Parameters $parameters): \Pagerfanta\Pagerfanta
     {
         if (!class_exists(QueryAdapter::class)) {
             throw new \LogicException('Pagerfanta DBAL adapter is not available. Try running "composer require pagerfanta/doctrine-dbal-adapter".');

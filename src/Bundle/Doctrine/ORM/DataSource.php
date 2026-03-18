@@ -20,15 +20,11 @@ use Sylius\Bundle\GridBundle\Doctrine\DataSourceInterface;
 use Sylius\Component\Grid\Data\ExpressionBuilderInterface;
 use Sylius\Component\Grid\Parameters;
 
-final class DataSource implements DataSourceInterface
+final readonly class DataSource implements DataSourceInterface
 {
     private QueryBuilder $queryBuilder;
 
     private ExpressionBuilderInterface $expressionBuilder;
-
-    private bool $fetchJoinCollection;
-
-    private bool $useOutputWalkers;
 
     /**
      * @param bool $fetchJoinCollection must be 'true' when the query fetch-joins a to-many collection,
@@ -38,12 +34,10 @@ final class DataSource implements DataSourceInterface
      *                                the to-many association, otherwise it will throw an exception
      *                                might greatly affect the performance (https://github.com/Sylius/Sylius/issues/3775)
      */
-    public function __construct(QueryBuilder $queryBuilder, bool $fetchJoinCollection, bool $useOutputWalkers)
+    public function __construct(QueryBuilder $queryBuilder, private bool $fetchJoinCollection, private bool $useOutputWalkers)
     {
         $this->queryBuilder = $queryBuilder;
         $this->expressionBuilder = new ExpressionBuilder($queryBuilder);
-        $this->fetchJoinCollection = $fetchJoinCollection;
-        $this->useOutputWalkers = $useOutputWalkers;
     }
 
     /**
@@ -73,7 +67,7 @@ final class DataSource implements DataSourceInterface
         return $this->expressionBuilder;
     }
 
-    public function getData(Parameters $parameters)
+    public function getData(Parameters $parameters): \Pagerfanta\Pagerfanta
     {
         if (!class_exists(QueryAdapter::class)) {
             throw new \LogicException('Pagerfanta ORM adapter is not available. Try running "composer require pagerfanta/doctrine-orm-adapter".');
