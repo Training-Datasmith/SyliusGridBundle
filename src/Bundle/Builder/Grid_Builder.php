@@ -16,23 +16,39 @@ use Sylius\Bundle\Grid_Bundle\Builder\Action_Group\Action_Group;
 use Sylius\Bundle\Grid_Bundle\Builder\Action_Group\Action_Group_Interface;
 use Sylius\Bundle\Grid_Bundle\Builder\Field\Field_Interface;
 use Sylius\Bundle\Grid_Bundle\Builder\Filter\Filter_Interface;
+/**
+ * Fluent builder for Sylius grid definitions using the PHP API.
+ *
+ * Grids created here are equivalent to those defined in YAML/XML configuration
+ * but are expressed in PHP code using a builder DSL. Use Grid_Builder::create()
+ * to start and to_array() to produce the configuration array consumed by the
+ * grid registry.
+ *
+ * Example:
+ *   Grid_Builder::create('app_product', Product::class)
+ *       ->add_field(String_Field::create('name'))
+ *       ->add_filter(String_Filter::create('search'))
+ *       ->add_action_group(Main_Action_Group::create([Create_Action::create()]))
+ *
+ * @see Grid_Builder_Interface For the full method contract
+ */
 final class Grid_Builder implements Grid_Builder_Interface
 {
     private const DEFAULT_DRIVER_NAME = 'doctrine/orm';
     private string $driver;
-    /** @var array<string, mixed> */
+    /** @var array<string, mixed> Driver-specific configuration (e.g. Doctrine ORM class, repository method) */
     private array $driver_configuration = [];
-    /** @var string|callable|null */
+    /** @var string|callable|null Custom data provider service ID or callable */
     private $provider;
-    /** @var array<string, FieldInterface> */
+    /** @var array<string, Field_Interface> Registered column fields, keyed by field name */
     private array $fields = [];
-    /** @var array<string, string> */
+    /** @var array<string, string> Default sort columns: field name => direction ('asc'|'desc') */
     private array $sorting = [];
-    /** @var array<string, FilterInterface> */
+    /** @var array<string, Filter_Interface> Registered filters, keyed by filter name */
     private array $filters = [];
-    /** @var array<string, ActionGroupInterface> */
+    /** @var array<string, Action_Group_Interface> Action groups keyed by group name */
     private array $action_groups = [];
-    /** @var int[] */
+    /** @var int[] Allowed per-page values for the paginator (e.g. [10, 25, 50]) */
     private array $limits = [];
     private ?string $extends = null;
     /**
@@ -43,6 +59,11 @@ final class Grid_Builder implements Grid_Builder_Interface
      * }
      */
     private array $removals = [];
+
+    /**
+     * @param string      $name           Unique grid name (used as service/config key)
+     * @param string|null $resource_class FQCN of the resource entity, or null for custom driver config
+     */
     private function __construct(private readonly string $name, ?string $resource_class = null)
     {
         $this->driver = self::DEFAULT_DRIVER_NAME;
@@ -50,27 +71,67 @@ final class Grid_Builder implements Grid_Builder_Interface
             $this->driver_configuration['class'] = $resource_class;
         }
     }
+
+    /**
+     * Creates a new grid builder for the given grid name.
+     *
+     * @param string      $name           Unique grid name (used as service/config key)
+     * @param string|null $resource_class FQCN of the resource entity, or null when using a custom driver config
+     *
+     * @return Grid_Builder_Interface Fluent grid builder
+     */
     public static function create(string $name, ?string $resource_class = null): Grid_Builder_Interface
     {
         return new self($name, $resource_class);
     }
+
+    /**
+     * Returns the unique name of this grid.
+     *
+     * @return string Grid name as registered in the grid registry
+     */
     public function get_name(): string
     {
         return $this->name;
     }
+
+    /**
+     * Sets the driver used to query data for this grid.
+     *
+     * Built-in drivers: 'doctrine/orm', 'doctrine/phpcr-odm', 'service'.
+     *
+     * @param string $driver Driver identifier
+     *
+     * @return Grid_Builder_Interface Fluent interface
+     */
     public function set_driver(string $driver): Grid_Builder_Interface
     {
         $this->driver = $driver;
         return $this;
     }
+
     /**
-     * @param mixed $value
+     * Sets a single driver configuration option.
+     *
+     * @param string $option Configuration key (e.g. 'class', 'repository')
+     * @param mixed  $value  Configuration value
+     *
+     * @return Grid_Builder_Interface Fluent interface
      */
     public function set_driver_option(string $option, $value): Grid_Builder_Interface
     {
         $this->driver_configuration[$option] = $value;
         return $this;
     }
+
+    /**
+     * Configures the grid to use a specific Doctrine repository method as the data source.
+     *
+     * @param string|array<int, mixed> $method    Method name or [service_id, method] tuple
+     * @param array<int, mixed>        $arguments Arguments passed to the repository method
+     *
+     * @return Grid_Builder_Interface Fluent interface
+     */
     public function set_repository_method($method, array $arguments = []): Grid_Builder_Interface
     {
         return $this->set_driver_option('repository', ['method' => $method, 'arguments' => $arguments]);
