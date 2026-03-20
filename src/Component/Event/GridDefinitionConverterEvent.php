@@ -8,21 +8,17 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Component\Grid\Event;
 
 use Sylius\Component\Grid\Definition\Grid;
-use Symfony\Contracts\EventDispatcher\Event;
-
-final class GridDefinitionConverterEvent extends Event
+use Symfony\Contracts\Event_Dispatcher\Event;
+final class Grid_Definition_Converter_Event extends Event
 {
     public function __construct(private readonly Grid $grid)
     {
     }
-
-    public function getGrid(): Grid
+    public function get_grid(): Grid
     {
         return $this->grid;
     }

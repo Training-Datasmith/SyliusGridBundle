@@ -8,45 +8,35 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Component\Grid\Filtering;
 
 use Sylius\Component\Grid\Definition\Filter;
 use Sylius\Component\Grid\Definition\Grid;
 use Sylius\Component\Grid\Parameters;
-
-final class FiltersCriteriaResolver implements FiltersCriteriaResolverInterface
+final class Filters_Criteria_Resolver implements Filters_Criteria_Resolver_Interface
 {
-    public function hasCriteria(Grid $grid, Parameters $parameters): bool
+    public function has_criteria(Grid $grid, Parameters $parameters): bool
     {
         if ($parameters->has('criteria')) {
             return true;
         }
-        return !empty($this->getFiltersDefaultCriteria($grid->getFilters()));
+        return !empty($this->get_filters_default_criteria($grid->get_filters()));
     }
-
-    public function getCriteria(Grid $grid, Parameters $parameters): array
+    public function get_criteria(Grid $grid, Parameters $parameters): array
     {
-        $defaultCriteria = array_map(
-            fn (Filter $filter) => $filter->getCriteria(),
-            $this->getFiltersDefaultCriteria($grid->getFilters()),
-        );
-
+        $default_criteria = array_map(fn(Filter $filter) => $filter->get_criteria(), $this->get_filters_default_criteria($grid->get_filters()));
         /** @var array<string, mixed> $criteria */
-        $criteria = $parameters->get('criteria', $defaultCriteria);
-
+        $criteria = $parameters->get('criteria', $default_criteria);
         return $criteria;
     }
-
     /**
      * @param Filter[] $filters
      *
      * @return Filter[]
      */
-    private function getFiltersDefaultCriteria(array $filters): array
+    private function get_filters_default_criteria(array $filters): array
     {
-        return array_filter($filters, fn (Filter $filter) => null !== $filter->getCriteria());
+        return array_filter($filters, fn(Filter $filter) => null !== $filter->get_criteria());
     }
 }

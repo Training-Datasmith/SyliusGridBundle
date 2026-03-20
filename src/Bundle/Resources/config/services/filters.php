@@ -8,122 +8,63 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+declare (strict_types=1);
+namespace Symfony\Component\Dependency_Injection\Loader\Configurator;
 
-declare(strict_types=1);
-
-namespace Symfony\Component\DependencyInjection\Loader\Configurator;
-
-use Sylius\Bundle\GridBundle\Form\Registry\FormTypeRegistry;
-use Sylius\Bundle\GridBundle\Form\Type\Filter\BooleanFilterType;
-use Sylius\Bundle\GridBundle\Form\Type\Filter\DateFilterType;
-use Sylius\Bundle\GridBundle\Form\Type\Filter\EntityFilterType;
-use Sylius\Bundle\GridBundle\Form\Type\Filter\EnumFilterType;
-use Sylius\Bundle\GridBundle\Form\Type\Filter\ExistsFilterType;
-use Sylius\Bundle\GridBundle\Form\Type\Filter\NumericRangeFilterType;
-use Sylius\Bundle\GridBundle\Form\Type\Filter\SelectFilterType;
-use Sylius\Bundle\GridBundle\Form\Type\Filter\StringFilterType;
-use Sylius\Bundle\GridBundle\Storage\FilterStorageInterface;
-use Sylius\Bundle\GridBundle\Storage\SessionFilterStorage;
-use Sylius\Component\Grid\Filter\BooleanFilter;
-use Sylius\Component\Grid\Filter\DateFilter;
-use Sylius\Component\Grid\Filter\EntityFilter;
-use Sylius\Component\Grid\Filter\ExistsFilter;
-use Sylius\Component\Grid\Filter\NumericRangeFilter;
-use Sylius\Component\Grid\Filter\SelectFilter;
-use Sylius\Component\Grid\Filter\StringFilter;
-
-return static function (ContainerConfigurator $container): void {
+use Sylius\Bundle\Grid_Bundle\Form\Registry\Form_Type_Registry;
+use Sylius\Bundle\Grid_Bundle\Form\Type\Filter\Boolean_Filter_Type;
+use Sylius\Bundle\Grid_Bundle\Form\Type\Filter\Date_Filter_Type;
+use Sylius\Bundle\Grid_Bundle\Form\Type\Filter\Entity_Filter_Type;
+use Sylius\Bundle\Grid_Bundle\Form\Type\Filter\Enum_Filter_Type;
+use Sylius\Bundle\Grid_Bundle\Form\Type\Filter\Exists_Filter_Type;
+use Sylius\Bundle\Grid_Bundle\Form\Type\Filter\Numeric_Range_Filter_Type;
+use Sylius\Bundle\Grid_Bundle\Form\Type\Filter\Select_Filter_Type;
+use Sylius\Bundle\Grid_Bundle\Form\Type\Filter\String_Filter_Type;
+use Sylius\Bundle\Grid_Bundle\Storage\Filter_Storage_Interface;
+use Sylius\Bundle\Grid_Bundle\Storage\Session_Filter_Storage;
+use Sylius\Component\Grid\Filter\Boolean_Filter;
+use Sylius\Component\Grid\Filter\Date_Filter;
+use Sylius\Component\Grid\Filter\Entity_Filter;
+use Sylius\Component\Grid\Filter\Exists_Filter;
+use Sylius\Component\Grid\Filter\Numeric_Range_Filter;
+use Sylius\Component\Grid\Filter\Select_Filter;
+use Sylius\Component\Grid\Filter\String_Filter;
+return static function (Container_Configurator $container): void {
     $services = $container->services();
-
-    $services->defaults()
-        ->public();
-
-    $services->set('sylius.grid.filter_storage.session', SessionFilterStorage::class)
-        ->private()
-        ->args([service('request_stack')]);
-
+    $services->defaults()->public();
+    $services->set('sylius.grid.filter_storage.session', Session_Filter_Storage::class)->private()->args([service('request_stack')]);
     $services->alias('sylius.grid.filter_storage', 'sylius.grid.filter_storage.session');
-
-    $services->alias(FilterStorageInterface::class, 'sylius.grid.filter_storage');
-
-    $services->set('sylius.form_registry.grid_filter', FormTypeRegistry::class)
-        ->private();
-
-    $services->set('sylius.grid_filter.string', StringFilter::class)
-        ->tag('sylius.grid_filter', ['type' => 'string', 'form_type' => StringFilterType::class]);
-
-    $services->alias(StringFilter::class, 'sylius.grid_filter.string');
-
-    $services->set(StringFilterType::class)
-        ->tag('form.type');
-
-    $services->alias('sylius.form.type.grid_filter.string', StringFilterType::class);
-
-    $services->set('sylius.grid_filter.boolean', BooleanFilter::class)
-        ->tag('sylius.grid_filter', ['type' => 'boolean', 'form_type' => BooleanFilterType::class]);
-
-    $services->alias(BooleanFilter::class, 'sylius.grid_filter.boolean');
-
-    $services->set('sylius.form.type.grid_filter.boolean', BooleanFilterType::class)
-        ->tag('form.type');
-
-    $services->alias(BooleanFilterType::class, 'sylius.form.type.grid_filter.boolean');
-
-    $services->set('sylius.grid_filter.date', DateFilter::class)
-        ->tag('sylius.grid_filter', ['type' => 'date', 'form_type' => DateFilterType::class]);
-
-    $services->alias(DateFilter::class, 'sylius.grid_filter.date');
-
-    $services->set('sylius.form.type.grid_filter.date', DateFilterType::class)
-        ->tag('form.type');
-
-    $services->alias(DateFilterType::class, 'sylius.form.type.grid_filter.date');
-
-    $services->set('sylius.grid_filter.entity', EntityFilter::class)
-        ->tag('sylius.grid_filter', ['type' => 'entity', 'form_type' => EntityFilterType::class]);
-
-    $services->alias(EntityFilter::class, 'sylius.grid_filter.entity');
-
-    $services->set('sylius.form.type.grid_filter.entity', EntityFilterType::class)
-        ->tag('form.type');
-
-    $services->alias(EntityFilterType::class, 'sylius.form.type.grid_filter.entity');
-
-    $services->set('sylius.grid_filter.exists', ExistsFilter::class)
-        ->tag('sylius.grid_filter', ['type' => 'exists', 'form_type' => ExistsFilterType::class]);
-
-    $services->alias(ExistsFilter::class, 'sylius.grid_filter.exists');
-
-    $services->set('sylius.form.type.grid_filter.exists', ExistsFilterType::class)
-        ->tag('form.type');
-
-    $services->alias(ExistsFilterType::class, 'sylius.form.type.grid_filter.exists');
-
-    $services->set(NumericRangeFilter::class)
-        ->tag('sylius.grid_filter', ['type' => 'numeric_range', 'form_type' => NumericRangeFilterType::class]);
-
-    $services->alias('sylius.grid_filter.numeric_range', NumericRangeFilter::class);
-
-    $services->set('sylius.form.type.grid_filter.numeric_range', NumericRangeFilterType::class)
-        ->tag('form.type');
-
-    $services->alias(NumericRangeFilterType::class, 'sylius.form.type.grid_filter.numeric_range');
-
-    $services->set('sylius.grid_filter.select', SelectFilter::class)
-        ->tag('sylius.grid_filter', ['type' => 'select', 'form_type' => SelectFilterType::class]);
-
-    $services->alias(SelectFilter::class, 'sylius.grid_filter.select');
-
-    $services->set('sylius.form.type.grid_filter.select', SelectFilterType::class)
-        ->tag('form.type');
-
-    $services->alias(SelectFilterType::class, 'sylius.form.type.grid_filter.select');
-
-    $services->set('sylius.grid_filter.enum', SelectFilter::class)
-        ->tag('sylius.grid_filter', ['type' => 'enum', 'form_type' => EnumFilterType::class]);
-
-    $services->set('sylius.form.type.grid_filter.enum', EnumFilterType::class)
-        ->tag('form.type');
-
-    $services->alias(EnumFilterType::class, 'sylius.form.type.grid_filter.enum');
+    $services->alias(Filter_Storage_Interface::class, 'sylius.grid.filter_storage');
+    $services->set('sylius.form_registry.grid_filter', Form_Type_Registry::class)->private();
+    $services->set('sylius.grid_filter.string', String_Filter::class)->tag('sylius.grid_filter', ['type' => 'string', 'form_type' => String_Filter_Type::class]);
+    $services->alias(String_Filter::class, 'sylius.grid_filter.string');
+    $services->set(String_Filter_Type::class)->tag('form.type');
+    $services->alias('sylius.form.type.grid_filter.string', String_Filter_Type::class);
+    $services->set('sylius.grid_filter.boolean', Boolean_Filter::class)->tag('sylius.grid_filter', ['type' => 'boolean', 'form_type' => Boolean_Filter_Type::class]);
+    $services->alias(Boolean_Filter::class, 'sylius.grid_filter.boolean');
+    $services->set('sylius.form.type.grid_filter.boolean', Boolean_Filter_Type::class)->tag('form.type');
+    $services->alias(Boolean_Filter_Type::class, 'sylius.form.type.grid_filter.boolean');
+    $services->set('sylius.grid_filter.date', Date_Filter::class)->tag('sylius.grid_filter', ['type' => 'date', 'form_type' => Date_Filter_Type::class]);
+    $services->alias(Date_Filter::class, 'sylius.grid_filter.date');
+    $services->set('sylius.form.type.grid_filter.date', Date_Filter_Type::class)->tag('form.type');
+    $services->alias(Date_Filter_Type::class, 'sylius.form.type.grid_filter.date');
+    $services->set('sylius.grid_filter.entity', Entity_Filter::class)->tag('sylius.grid_filter', ['type' => 'entity', 'form_type' => Entity_Filter_Type::class]);
+    $services->alias(Entity_Filter::class, 'sylius.grid_filter.entity');
+    $services->set('sylius.form.type.grid_filter.entity', Entity_Filter_Type::class)->tag('form.type');
+    $services->alias(Entity_Filter_Type::class, 'sylius.form.type.grid_filter.entity');
+    $services->set('sylius.grid_filter.exists', Exists_Filter::class)->tag('sylius.grid_filter', ['type' => 'exists', 'form_type' => Exists_Filter_Type::class]);
+    $services->alias(Exists_Filter::class, 'sylius.grid_filter.exists');
+    $services->set('sylius.form.type.grid_filter.exists', Exists_Filter_Type::class)->tag('form.type');
+    $services->alias(Exists_Filter_Type::class, 'sylius.form.type.grid_filter.exists');
+    $services->set(Numeric_Range_Filter::class)->tag('sylius.grid_filter', ['type' => 'numeric_range', 'form_type' => Numeric_Range_Filter_Type::class]);
+    $services->alias('sylius.grid_filter.numeric_range', Numeric_Range_Filter::class);
+    $services->set('sylius.form.type.grid_filter.numeric_range', Numeric_Range_Filter_Type::class)->tag('form.type');
+    $services->alias(Numeric_Range_Filter_Type::class, 'sylius.form.type.grid_filter.numeric_range');
+    $services->set('sylius.grid_filter.select', Select_Filter::class)->tag('sylius.grid_filter', ['type' => 'select', 'form_type' => Select_Filter_Type::class]);
+    $services->alias(Select_Filter::class, 'sylius.grid_filter.select');
+    $services->set('sylius.form.type.grid_filter.select', Select_Filter_Type::class)->tag('form.type');
+    $services->alias(Select_Filter_Type::class, 'sylius.form.type.grid_filter.select');
+    $services->set('sylius.grid_filter.enum', Select_Filter::class)->tag('sylius.grid_filter', ['type' => 'enum', 'form_type' => Enum_Filter_Type::class]);
+    $services->set('sylius.form.type.grid_filter.enum', Enum_Filter_Type::class)->tag('form.type');
+    $services->alias(Enum_Filter_Type::class, 'sylius.form.type.grid_filter.enum');
 };

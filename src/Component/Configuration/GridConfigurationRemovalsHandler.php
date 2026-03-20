@@ -8,46 +8,39 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Component\Grid\Configuration;
 
-final class GridConfigurationRemovalsHandler implements GridConfigurationRemovalsHandlerInterface
+final class Grid_Configuration_Removals_Handler implements Grid_Configuration_Removals_Handler_Interface
 {
-    public function handle(array $gridConfiguration): array
+    public function handle(array $grid_configuration): array
     {
-        if (false === isset($gridConfiguration['removals'])) {
-            return $gridConfiguration;
+        if (false === isset($grid_configuration['removals'])) {
+            return $grid_configuration;
         }
-
         /** @var array<string, mixed> $removals */
-        $removals = $gridConfiguration['removals'];
-        $this->handleRemovals($gridConfiguration, $removals);
-        unset($gridConfiguration['removals']);
-
-        return $gridConfiguration;
+        $removals = $grid_configuration['removals'];
+        $this->handle_removals($grid_configuration, $removals);
+        unset($grid_configuration['removals']);
+        return $grid_configuration;
     }
-
     /**
      * @param array<string, mixed> $gridConfiguration
      * @param array<string, mixed> $removals
      */
-    private function handleRemovals(array &$gridConfiguration, array $removals): void
+    private function handle_removals(array &$grid_configuration, array $removals): void
     {
         foreach ($removals as $type => $name) {
             if (!is_array($name)) {
-                unset($gridConfiguration[$name]);
-
+                unset($grid_configuration[$name]);
                 continue;
             }
-
-            if (isset($gridConfiguration[$type])) {
+            if (isset($grid_configuration[$type])) {
                 /** @var array<string, mixed> $subConfiguration */
-                $subConfiguration = $gridConfiguration[$type];
+                $sub_configuration = $grid_configuration[$type];
                 /** @var array<string, mixed> $name */
-                $this->handleRemovals($subConfiguration, $name);
-                $gridConfiguration[$type] = $subConfiguration;
+                $this->handle_removals($sub_configuration, $name);
+                $grid_configuration[$type] = $sub_configuration;
             }
         }
     }

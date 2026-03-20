@@ -8,17 +8,14 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+declare (strict_types=1);
+namespace Sylius\Bundle\Grid_Bundle\Builder\Action_Group;
 
-declare(strict_types=1);
-
-namespace Sylius\Bundle\GridBundle\Builder\ActionGroup;
-
-use Sylius\Bundle\GridBundle\Builder\Action\ActionInterface;
-
-final class BulkActionGroup
+use Sylius\Bundle\Grid_Bundle\Builder\Action\Action_Interface;
+final class Bulk_Action_Group
 {
-    public static function create(ActionInterface ...$actions): ActionGroupInterface
+    public static function create(Action_Interface ...$actions): Action_Group_Interface
     {
-        return ActionGroup::create(ActionGroupInterface::BULK_GROUP, ...$actions);
+        return Action_Group::create(Action_Group_Interface::BULK_GROUP, ...$actions);
     }
 }

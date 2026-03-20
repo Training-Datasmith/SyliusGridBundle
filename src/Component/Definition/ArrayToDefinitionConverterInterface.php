@@ -8,12 +8,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Component\Grid\Definition;
 
-interface ArrayToDefinitionConverterInterface
+interface Array_To_Definition_Converter_Interface
 {
     /**
      * @param array<string, mixed> $configuration

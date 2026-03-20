@@ -8,19 +8,15 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+declare (strict_types=1);
+namespace Sylius\Bundle\Grid_Bundle\Form\Registry;
 
-declare(strict_types=1);
-
-namespace Sylius\Bundle\GridBundle\Form\Registry;
-
-interface FormTypeRegistryInterface
+interface Form_Type_Registry_Interface
 {
     /**
      * @param string|class-string $formType
      */
-    public function add(string $identifier, string $typeIdentifier, string $formType): void;
-
-    public function get(string $identifier, string $typeIdentifier): ?string;
-
-    public function has(string $identifier, string $typeIdentifier): bool;
+    public function add(string $identifier, string $type_identifier, string $form_type): void;
+    public function get(string $identifier, string $type_identifier): ?string;
+    public function has(string $identifier, string $type_identifier): bool;
 }

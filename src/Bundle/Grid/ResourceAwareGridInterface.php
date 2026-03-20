@@ -8,12 +8,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+declare (strict_types=1);
+namespace Sylius\Bundle\Grid_Bundle\Grid;
 
-declare(strict_types=1);
-
-namespace Sylius\Bundle\GridBundle\Grid;
-
-interface ResourceAwareGridInterface extends GridInterface
+interface Resource_Aware_Grid_Interface extends Grid_Interface
 {
-    public function getResourceClass(): string;
+    public function get_resource_class(): string;
 }

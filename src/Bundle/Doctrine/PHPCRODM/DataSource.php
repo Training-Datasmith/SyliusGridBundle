@@ -8,78 +8,60 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+declare (strict_types=1);
+namespace Sylius\Bundle\Grid_Bundle\Doctrine\PHPCRODM;
 
-declare(strict_types=1);
-
-namespace Sylius\Bundle\GridBundle\Doctrine\PHPCRODM;
-
-use Doctrine\ODM\PHPCR\Query\Builder\QueryBuilder;
-use Pagerfanta\Doctrine\PHPCRODM\QueryAdapter;
+use Doctrine\ODM\PHPCR\Query\Builder\Query_Builder;
+use Pagerfanta\Doctrine\PHPCRODM\Query_Adapter;
 use Pagerfanta\Pagerfanta;
-use Sylius\Bundle\GridBundle\Doctrine\DataSourceInterface;
-use Sylius\Component\Grid\Data\ExpressionBuilderInterface;
+use Sylius\Bundle\Grid_Bundle\Doctrine\Data_Source_Interface;
+use Sylius\Component\Grid\Data\Expression_Builder_Interface;
 use Sylius\Component\Grid\Parameters;
-
-@trigger_error(sprintf('The "%s" class is deprecated since Sylius 1.3. Doctrine MongoDB and PHPCR support will no longer be supported in Sylius 2.0.', DataSource::class), \E_USER_DEPRECATED);
-
-final readonly class DataSource implements DataSourceInterface
+@trigger_error(sprintf('The "%s" class is deprecated since Sylius 1.3. Doctrine MongoDB and PHPCR support will no longer be supported in Sylius 2.0.', Data_Source::class), \E_USER_DEPRECATED);
+final readonly class Data_Source implements Data_Source_Interface
 {
-    private QueryBuilder $queryBuilder;
-
-    private ExpressionBuilderInterface $expressionBuilder;
-
-    public function __construct(QueryBuilder $queryBuilder, ?ExpressionBuilderInterface $expressionBuilder = null)
+    private Query_Builder $query_builder;
+    private Expression_Builder_Interface $expression_builder;
+    public function __construct(Query_Builder $query_builder, ?Expression_Builder_Interface $expression_builder = null)
     {
-        $this->queryBuilder = $queryBuilder;
-        $this->expressionBuilder = $expressionBuilder ?: new ExpressionBuilder();
+        $this->query_builder = $query_builder;
+        $this->expression_builder = $expression_builder ?: new Expression_Builder();
     }
-
-    public function restrict($expression, string $condition = DataSourceInterface::CONDITION_AND): void
+    public function restrict($expression, string $condition = Data_Source_Interface::CONDITION_AND): void
     {
-        $parentNode = match ($condition) {
-            DataSourceInterface::CONDITION_AND => $this->queryBuilder->andWhere(),
-            DataSourceInterface::CONDITION_OR => $this->queryBuilder->orWhere(),
-            default => throw new \RuntimeException(sprintf(
-                'Unknown restrict condition "%s"',
-                $condition,
-            )),
+        $parent_node = match ($condition) {
+            Data_Source_Interface::CONDITION_AND => $this->query_builder->and_where(),
+            Data_Source_Interface::CONDITION_OR => $this->query_builder->or_where(),
+            default => throw new \RuntimeException(sprintf('Unknown restrict condition "%s"', $condition)),
         };
-
-        $visitor = new ExpressionVisitor($this->queryBuilder);
-        $visitor->dispatch($expression, $parentNode);
+        $visitor = new Expression_Visitor($this->query_builder);
+        $visitor->dispatch($expression, $parent_node);
     }
-
-    public function getQueryBuilder(): QueryBuilder
+    public function get_query_builder(): Query_Builder
     {
-        return $this->queryBuilder;
+        return $this->query_builder;
     }
-
-    public function getExpressionBuilder(): ExpressionBuilderInterface
+    public function get_expression_builder(): Expression_Builder_Interface
     {
-        return $this->expressionBuilder;
+        return $this->expression_builder;
     }
-
-    public function getData(Parameters $parameters): \Pagerfanta\Pagerfanta
+    public function get_data(Parameters $parameters): \Pagerfanta\Pagerfanta
     {
-        if (!class_exists(QueryAdapter::class)) {
+        if (!class_exists(Query_Adapter::class)) {
             throw new \LogicException('Pagerfanta PHPCR-ODM adapter is not available. Try running "composer require pagerfanta/doctrine-phpcr-odm-adapter".');
         }
-
-        $orderBy = $this->queryBuilder->orderBy();
-        foreach ($this->expressionBuilder->getOrderBys() as $field => $direction) {
+        $order_by = $this->query_builder->order_by();
+        foreach ($this->expression_builder->get_order_bys() as $field => $direction) {
             if (is_int($field)) {
                 $field = $direction;
                 $direction = 'asc';
             }
-
             // todo: validate direction?
             $direction = strtolower($direction);
-            $orderBy->{$direction}()->field(sprintf('%s.%s', Driver::QB_SOURCE_ALIAS, $field));
+            $order_by->{$direction}()->field(sprintf('%s.%s', Driver::QB_SOURCE_ALIAS, $field));
         }
-
-        $paginator = new Pagerfanta(new QueryAdapter($this->queryBuilder));
-        $paginator->setCurrentPage((int) $parameters->get('page', 1));
-
+        $paginator = new Pagerfanta(new Query_Adapter($this->query_builder));
+        $paginator->set_current_page((int) $parameters->get('page', 1));
         return $paginator;
     }
 }

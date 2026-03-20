@@ -8,22 +8,18 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+declare (strict_types=1);
+namespace Sylius\Bundle\Grid_Bundle\Dependency_Injection\Compiler;
 
-declare(strict_types=1);
-
-namespace Sylius\Bundle\GridBundle\DependencyInjection\Compiler;
-
-use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-
-final class RegisterTimezoneParameterPass implements CompilerPassInterface
+use Symfony\Component\Dependency_Injection\Compiler\Compiler_Pass_Interface;
+use Symfony\Component\Dependency_Injection\Container_Builder;
+final class Register_Timezone_Parameter_Pass implements Compiler_Pass_Interface
 {
-    public function process(ContainerBuilder $container): void
+    public function process(Container_Builder $container): void
     {
-        if ($container->hasParameter('sylius_grid.timezone')) {
+        if ($container->has_parameter('sylius_grid.timezone')) {
             return;
         }
-
-        $container->setParameter('sylius_grid.timezone', null);
+        $container->set_parameter('sylius_grid.timezone', null);
     }
 }

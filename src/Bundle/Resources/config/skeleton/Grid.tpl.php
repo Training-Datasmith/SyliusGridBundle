@@ -1,13 +1,17 @@
-<?php declare(strict_types=1);
+<?php
 
-use Symfony\Bundle\MakerBundle\Str;
-
+declare (strict_types=1);
+use Symfony\Bundle\Maker_Bundle\Str;
+echo "<?php\n";
 ?>
-<?= "<?php\n" ?>
 
-namespace <?= $namespace; ?>;
+namespace <?php 
+echo $namespace;
+?>;
 
-use <?= $entity->getName() ?>;
+use <?php 
+echo $entity->get_name();
+?>;
 use Sylius\Bundle\GridBundle\Builder\Action\CreateAction;
 use Sylius\Bundle\GridBundle\Builder\Action\DeleteAction;
 use Sylius\Bundle\GridBundle\Builder\Action\ShowAction;
@@ -23,10 +27,16 @@ use Sylius\Bundle\GridBundle\Grid\AbstractGrid;
 use Sylius\Component\Grid\Attribute\AsGrid;
 
 #[AsGrid(
-    resourceClass: <?= $entity->getShortName() ?>::class,
-    name: 'app_<?= Str::asSnakeCase(($entity->getShortName())) ?>',
+    resourceClass: <?php 
+echo $entity->get_short_name();
+?>::class,
+    name: 'app_<?php 
+echo Str::as_snake_case($entity->get_short_name());
+?>',
 )]
-final class <?= $class_name ?> extends AbstractGrid
+final class <?php 
+echo $class_name;
+?> extends AbstractGrid
 {
     public function __construct()
     {
@@ -40,24 +50,22 @@ final class <?= $class_name ?> extends AbstractGrid
             // ->addFilters()
             // see https://stack.sylius.com/grid/index/field_types
             ->addFields(
-<?php
-                foreach ($defaultFields as $fieldname => $type) {
-                    if (in_array($type, ['STRING', 'TEXT'], true)) {
-                        echo "                StringField::create('" . $fieldname . "')\n";
-                        echo "                    ->setLabel('" . ucfirst((string) $fieldname) . "')\n";
-                        echo "                    ->setSortable(true),\n";
-                    }
-
-                    if (str_starts_with((string) $type, 'DATE')) {
-                        echo "                DateTimeField::create('" . $fieldname . "')\n";
-                        echo "                    ->setLabel('" . ucfirst((string) $fieldname) . "'),\n";
-                    }
-
-                    if (in_array($type, ['BOOLEAN', 'BOOL'], true)) {
-                        echo "            //    TwigField::create('" . $fieldname . "', 'path/to/field/template.html.twig')\n";
-                        echo "            //        ->setLabel('" . ucfirst((string) $fieldname) . "'),\n";
-                    }
-                }
+<?php 
+foreach ($default_fields as $fieldname => $type) {
+    if (in_array($type, ['STRING', 'TEXT'], true)) {
+        echo "                StringField::create('" . $fieldname . "')\n";
+        echo "                    ->setLabel('" . ucfirst((string) $fieldname) . "')\n";
+        echo "                    ->setSortable(true),\n";
+    }
+    if (str_starts_with((string) $type, 'DATE')) {
+        echo "                DateTimeField::create('" . $fieldname . "')\n";
+        echo "                    ->setLabel('" . ucfirst((string) $fieldname) . "'),\n";
+    }
+    if (in_array($type, ['BOOLEAN', 'BOOL'], true)) {
+        echo "            //    TwigField::create('" . $fieldname . "', 'path/to/field/template.html.twig')\n";
+        echo "            //        ->setLabel('" . ucfirst((string) $fieldname) . "'),\n";
+    }
+}
 ?>
             )
             ->addActionGroup(

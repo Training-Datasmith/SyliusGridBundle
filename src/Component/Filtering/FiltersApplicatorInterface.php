@@ -8,16 +8,13 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Component\Grid\Filtering;
 
-use Sylius\Component\Grid\Data\DataSourceInterface;
+use Sylius\Component\Grid\Data\Data_Source_Interface;
 use Sylius\Component\Grid\Definition\Grid;
 use Sylius\Component\Grid\Parameters;
-
-interface FiltersApplicatorInterface
+interface Filters_Applicator_Interface
 {
-    public function apply(DataSourceInterface $dataSource, Grid $grid, Parameters $parameters): void;
+    public function apply(Data_Source_Interface $data_source, Grid $grid, Parameters $parameters): void;
 }

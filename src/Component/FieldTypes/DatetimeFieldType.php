@@ -8,54 +8,45 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+declare (strict_types=1);
+namespace Sylius\Component\Grid\Field_Types;
 
-declare(strict_types=1);
-
-namespace Sylius\Component\Grid\FieldTypes;
-
-use Sylius\Component\Grid\DataExtractor\DataExtractorInterface;
+use Sylius\Component\Grid\Data_Extractor\Data_Extractor_Interface;
 use Sylius\Component\Grid\Definition\Field;
-use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Options_Resolver\Options_Resolver;
 use Webmozart\Assert\Assert;
-
-final readonly class DatetimeFieldType implements FieldTypeInterface
+final readonly class Datetime_Field_Type implements Field_Type_Interface
 {
-    public function __construct(private DataExtractorInterface $dataExtractor, private ?string $timezone = null)
+    public function __construct(private Data_Extractor_Interface $data_extractor, private ?string $timezone = null)
     {
     }
-
     /**
      * @throws \InvalidArgumentException
      */
     public function render(Field $field, mixed $data, array $options): string
     {
-        $value = $this->dataExtractor->get($field, $data);
+        $value = $this->data_extractor->get($field, $data);
         if (null === $value) {
             return '';
         }
-
         /** @var \DateTimeImmutable|\DateTime $value */
-        Assert::isInstanceOf($value, \DateTimeInterface::class);
-
+        Assert::is_instance_of($value, \DateTimeInterface::class);
         if (null !== $options['timezone']) {
             /** @var string $timezone */
             $timezone = $options['timezone'];
-            $value = $value->setTimezone(new \DateTimeZone($timezone));
+            $value = $value->set_timezone(new \DateTimeZone($timezone));
         }
-
         /** @var string $format */
         $format = $options['format'];
-
         return $value->format($format);
     }
-
-    public function configureOptions(OptionsResolver $resolver): void
+    public function configure_options(Options_Resolver $resolver): void
     {
-        $resolver->setDefault('format', 'Y-m-d H:i:s');
-        $resolver->setAllowedTypes('format', 'string');
-        $resolver->setDefault('timezone', $this->timezone);
-        $resolver->setAllowedTypes('timezone', ['null', 'string']);
-        $resolver->setDefined('vars');
-        $resolver->setAllowedTypes('vars', 'array');
+        $resolver->set_default('format', 'Y-m-d H:i:s');
+        $resolver->set_allowed_types('format', 'string');
+        $resolver->set_default('timezone', $this->timezone);
+        $resolver->set_allowed_types('timezone', ['null', 'string']);
+        $resolver->set_defined('vars');
+        $resolver->set_allowed_types('vars', 'array');
     }
 }

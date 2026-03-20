@@ -8,16 +8,13 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Component\Grid\View;
 
 use Sylius\Component\Grid\Definition\Grid;
 use Sylius\Component\Grid\Parameters;
 use Webmozart\Assert\Assert;
-
-class GridView implements GridViewInterface
+class Grid_View implements Grid_View_Interface
 {
     /**
      * @param mixed $data
@@ -25,79 +22,59 @@ class GridView implements GridViewInterface
     public function __construct(private $data, private readonly Grid $definition, private readonly Parameters $parameters)
     {
     }
-
-    public function getData()
+    public function get_data()
     {
         return $this->data;
     }
-
-    public function getDefinition(): Grid
+    public function get_definition(): Grid
     {
         return $this->definition;
     }
-
-    public function getParameters(): Parameters
+    public function get_parameters(): Parameters
     {
         return $this->parameters;
     }
-
-    public function getSortingOrder(string $fieldName): ?string
+    public function get_sorting_order(string $field_name): ?string
     {
-        $this->assertFieldIsSortable($fieldName);
-
-        $currentSorting = $this->getCurrentlySortedBy();
-
-        if (array_key_exists($fieldName, $currentSorting)) {
-            return $currentSorting[$fieldName];
+        $this->assert_field_is_sortable($field_name);
+        $current_sorting = $this->get_currently_sorted_by();
+        if (array_key_exists($field_name, $current_sorting)) {
+            return $current_sorting[$field_name];
         }
-
-        $definedSorting = $this->definition->getSorting();
-
-        return reset($definedSorting) ?: null;
+        $defined_sorting = $this->definition->get_sorting();
+        return reset($defined_sorting) ?: null;
     }
-
-    public function isSortedBy(string $fieldName): bool
+    public function is_sorted_by(string $field_name): bool
     {
-        $this->assertFieldIsSortable($fieldName);
-
+        $this->assert_field_is_sortable($field_name);
         if ($this->parameters->has('sorting')) {
             /** @var array<string, string> $sorting */
             $sorting = $this->parameters->get('sorting');
-
-            return array_key_exists($fieldName, $sorting);
+            return array_key_exists($field_name, $sorting);
         }
-
-        $sortingDefinition = $this->getDefinition()->getSorting();
-        $sortedFields = array_keys($sortingDefinition);
-
-        return $fieldName === array_shift($sortedFields);
+        $sorting_definition = $this->get_definition()->get_sorting();
+        $sorted_fields = array_keys($sorting_definition);
+        return $field_name === array_shift($sorted_fields);
     }
-
     /**
      * @return array<string, string>
      */
-    private function getCurrentlySortedBy(): array
+    private function get_currently_sorted_by(): array
     {
-        $defaultSorting = $this->definition->getSorting();
+        $default_sorting = $this->definition->get_sorting();
         if (!$this->parameters->has('sorting')) {
-            return $defaultSorting;
+            return $default_sorting;
         }
-
         /** @var array<string, string> $sorting */
         $sorting = $this->parameters->get('sorting');
-
-        return array_merge($defaultSorting, $sorting);
+        return array_merge($default_sorting, $sorting);
     }
-
     /**
      * @throws \InvalidArgumentException
      */
-    private function assertFieldIsSortable(string $fieldName): void
+    private function assert_field_is_sortable(string $field_name): void
     {
-        Assert::true($this->definition->hasField($fieldName), sprintf('Field "%s" does not exist.', $fieldName));
-        Assert::true(
-            $this->definition->getField($fieldName)->isSortable(),
-            sprintf('Field "%s" is not sortable.', $fieldName),
-        );
+        Assert::true($this->definition->has_field($field_name), sprintf('Field "%s" does not exist.', $field_name));
+        Assert::true($this->definition->get_field($field_name)->is_sortable(), sprintf('Field "%s" is not sortable.', $field_name));
     }
 }

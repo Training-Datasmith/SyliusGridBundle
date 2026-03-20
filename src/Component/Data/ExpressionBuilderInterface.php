@@ -8,117 +8,99 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Component\Grid\Data;
 
-interface ExpressionBuilderInterface
+interface Expression_Builder_Interface
 {
     /**
      * @param mixed ...$expressions
      *
      * @return mixed
      */
-    public function andX(...$expressions);
-
+    public function and_x(...$expressions);
     /**
      * @param mixed ...$expressions
      *
      * @return mixed
      */
-    public function orX(...$expressions);
-
+    public function or_x(...$expressions);
     /**
      * @param mixed $value
      *
      * @return mixed
      */
     public function comparison(string $field, string $operator, $value);
-
     /**
      * @param mixed $value
      *
      * @return mixed
      */
     public function equals(string $field, $value);
-
     /**
      * @param mixed $value
      *
      * @return mixed
      */
-    public function notEquals(string $field, $value);
-
+    public function not_equals(string $field, $value);
     /**
      * @param mixed $value
      *
      * @return mixed
      */
-    public function lessThan(string $field, $value);
-
+    public function less_than(string $field, $value);
     /**
      * @param mixed $value
      *
      * @return mixed
      */
-    public function lessThanOrEqual(string $field, $value);
-
+    public function less_than_or_equal(string $field, $value);
     /**
      * @param mixed $value
      *
      * @return mixed
      */
-    public function greaterThan(string $field, $value);
-
+    public function greater_than(string $field, $value);
     /**
      * @param mixed $value
      *
      * @return mixed
      */
-    public function greaterThanOrEqual(string $field, $value);
-
+    public function greater_than_or_equal(string $field, $value);
     /**
      * @param mixed[] $values
      *
      * @return mixed
      */
     public function in(string $field, array $values);
-
     /**
      * @param mixed[] $values
      *
      * @return mixed
      */
-    public function notIn(string $field, array $values);
-
+    public function not_in(string $field, array $values);
     /**
      * @return mixed
      */
-    public function isNull(string $field);
-
+    public function is_null(string $field);
     /**
      * @return mixed
      */
-    public function isNotNull(string $field);
-
+    public function is_not_null(string $field);
     /**
      * @return mixed
      */
     public function like(string $field, string $pattern);
-
     /**
      * @return mixed
      */
-    public function notLike(string $field, string $pattern);
-
+    public function not_like(string $field, string $pattern);
     /**
      * @return mixed
      */
-    public function orderBy(string $field, string $direction);
-
+    public function order_by(string $field, string $direction);
     /**
      * @return mixed
      */
-    public function addOrderBy(string $field, string $direction);
+    public function add_order_by(string $field, string $direction);
 }

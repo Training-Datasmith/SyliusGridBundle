@@ -8,23 +8,19 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Component\Grid\View;
 
-use Sylius\Component\Grid\Data\DataProviderInterface;
+use Sylius\Component\Grid\Data\Data_Provider_Interface;
 use Sylius\Component\Grid\Definition\Grid;
 use Sylius\Component\Grid\Parameters;
-
-final readonly class GridViewFactory implements GridViewFactoryInterface
+final readonly class Grid_View_Factory implements Grid_View_Factory_Interface
 {
-    public function __construct(private DataProviderInterface $dataProvider)
+    public function __construct(private Data_Provider_Interface $data_provider)
     {
     }
-
-    public function create(Grid $grid, Parameters $parameters): GridViewInterface
+    public function create(Grid $grid, Parameters $parameters): Grid_View_Interface
     {
-        return new GridView($this->dataProvider->getData($grid, $parameters), $grid, $parameters);
+        return new Grid_View($this->data_provider->get_data($grid, $parameters), $grid, $parameters);
     }
 }

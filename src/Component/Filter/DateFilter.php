@@ -8,22 +8,16 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Component\Grid\Filter;
 
-use Sylius\Component\Grid\Data\DataSourceInterface;
-use Sylius\Component\Grid\Filtering\FilterInterface;
-
-final class DateFilter implements FilterInterface
+use Sylius\Component\Grid\Data\Data_Source_Interface;
+use Sylius\Component\Grid\Filtering\Filter_Interface;
+final class Date_Filter implements Filter_Interface
 {
     public const NAME = 'date';
-
     public const DEFAULT_INCLUSIVE_FROM = true;
-
     public const DEFAULT_INCLUSIVE_TO = false;
-
     /**
      * @param array{
      *     from?: array{
@@ -41,49 +35,43 @@ final class DateFilter implements FilterInterface
      *     inclusive_to?: bool|string|int,
      * } $options
      */
-    public function apply(DataSourceInterface $dataSource, string $name, $data, array $options): void
+    public function apply(Data_Source_Interface $data_source, string $name, $data, array $options): void
     {
-        $expressionBuilder = $dataSource->getExpressionBuilder();
-
+        $expression_builder = $data_source->get_expression_builder();
         $field = $options['field'] ?? $name;
-
-        $from = isset($data['from']) ? $this->getDateTime($data['from'], '00:00') : null;
+        $from = isset($data['from']) ? $this->get_date_time($data['from'], '00:00') : null;
         if (null !== $from) {
             $inclusive = $options['inclusive_from'] ?? self::DEFAULT_INCLUSIVE_FROM;
             if (true === $inclusive) {
-                $dataSource->restrict($expressionBuilder->greaterThanOrEqual($field, $from));
+                $data_source->restrict($expression_builder->greater_than_or_equal($field, $from));
             } else {
-                $dataSource->restrict($expressionBuilder->greaterThan($field, $from));
+                $data_source->restrict($expression_builder->greater_than($field, $from));
             }
         }
-
-        $to = isset($data['to']) ? $this->getDateTime($data['to'], '23:59') : null;
+        $to = isset($data['to']) ? $this->get_date_time($data['to'], '23:59') : null;
         if (null !== $to) {
             $inclusive = $options['inclusive_to'] ?? self::DEFAULT_INCLUSIVE_TO;
             if (true === $inclusive) {
-                $dataSource->restrict($expressionBuilder->lessThanOrEqual($field, $to));
+                $data_source->restrict($expression_builder->less_than_or_equal($field, $to));
             } else {
-                $dataSource->restrict($expressionBuilder->lessThan($field, $to));
+                $data_source->restrict($expression_builder->less_than($field, $to));
             }
         }
     }
-
     /**
      * @param array{
      *     date: string,
      *     time?: string,
      * } $data
      */
-    private function getDateTime(array $data, string $defaultTime): ?string
+    private function get_date_time(array $data, string $default_time): ?string
     {
         if (empty($data['date'])) {
             return null;
         }
-
         if (empty($data['time'])) {
-            $data['time'] = $defaultTime;
+            $data['time'] = $default_time;
         }
-
         return $data['date'] . ' ' . $data['time'];
     }
 }

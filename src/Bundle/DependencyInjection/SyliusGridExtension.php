@@ -8,37 +8,32 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+declare (strict_types=1);
+namespace Sylius\Bundle\Grid_Bundle\Dependency_Injection;
 
-declare(strict_types=1);
-
-namespace Sylius\Bundle\GridBundle\DependencyInjection;
-
-use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
-use Doctrine\Bundle\PHPCRBundle\DoctrinePHPCRBundle;
-use Sylius\Bundle\CurrencyBundle\SyliusCurrencyBundle;
-use Sylius\Bundle\GridBundle\Grid\GridInterface;
-use Sylius\Bundle\GridBundle\SyliusGridBundle;
-use Sylius\Component\Grid\Annotation\AsGridFieldCallableService;
-use Sylius\Component\Grid\Attribute\AsField;
-use Sylius\Component\Grid\Attribute\AsFilter;
-use Sylius\Component\Grid\Data\DataProviderInterface;
-use Sylius\Component\Grid\Filtering\ConfigurableFilterInterface;
-use Symfony\Component\Config\FileLocator;
-use Symfony\Component\DependencyInjection\ChildDefinition;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Extension\Extension;
-use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
+use Doctrine\Bundle\Doctrine_Bundle\Doctrine_Bundle;
+use Doctrine\Bundle\Phpcr_Bundle\Doctrine_Phpcr_Bundle;
+use Sylius\Bundle\Currency_Bundle\Sylius_Currency_Bundle;
+use Sylius\Bundle\Grid_Bundle\Grid\Grid_Interface;
+use Sylius\Bundle\Grid_Bundle\Sylius_Grid_Bundle;
+use Sylius\Component\Grid\Annotation\As_Grid_Field_Callable_Service;
+use Sylius\Component\Grid\Attribute\As_Field;
+use Sylius\Component\Grid\Attribute\As_Filter;
+use Sylius\Component\Grid\Data\Data_Provider_Interface;
+use Sylius\Component\Grid\Filtering\Configurable_Filter_Interface;
+use Symfony\Component\Config\File_Locator;
+use Symfony\Component\Dependency_Injection\Child_Definition;
+use Symfony\Component\Dependency_Injection\Container_Builder;
+use Symfony\Component\Dependency_Injection\Extension\Extension;
+use Symfony\Component\Dependency_Injection\Loader\Php_File_Loader;
 use Twig\Environment;
-
-final class SyliusGridExtension extends Extension
+final class Sylius_Grid_Extension extends Extension
 {
-    public function load(array $configs, ContainerBuilder $container): void
+    public function load(array $configs, Container_Builder $container): void
     {
-        $config = $this->processConfiguration($this->getConfiguration([], $container), $configs);
-        $loader = new PhpFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
-
+        $config = $this->process_configuration($this->get_configuration([], $container), $configs);
+        $loader = new Php_File_Loader($container, new File_Locator(__DIR__ . '/../Resources/config'));
         $loader->load('services.php');
-
         /**
          * @var array{
          *     'filter': array<string, string>,
@@ -48,86 +43,47 @@ final class SyliusGridExtension extends Extension
          */
         $templates = $config['templates'];
         /** @var array<string, mixed> $gridsDefinitions */
-        $gridsDefinitions = $config['grids'];
-
-        $container->setParameter('sylius.grid.templates.action', $templates['action']);
-        $container->setParameter('sylius.grid.templates.bulk_action', $templates['bulk_action']);
-        $container->setParameter('sylius.grid.templates.filter', $templates['filter']);
-        $container->setParameter('sylius.grids_definitions', $gridsDefinitions);
-
-        $container->setAlias('sylius.grid.renderer', 'sylius.grid.renderer.twig');
-        $container->setAlias('sylius.grid.bulk_action_renderer', 'sylius.grid.bulk_action_renderer.twig');
-        $container->setAlias('sylius.grid.data_extractor', 'sylius.grid.data_extractor.property_access');
-
-        if ($container::willBeAvailable('twig/twig', Environment::class, ['symfony/twig-bundle'])) {
+        $grids_definitions = $config['grids'];
+        $container->set_parameter('sylius.grid.templates.action', $templates['action']);
+        $container->set_parameter('sylius.grid.templates.bulk_action', $templates['bulk_action']);
+        $container->set_parameter('sylius.grid.templates.filter', $templates['filter']);
+        $container->set_parameter('sylius.grids_definitions', $grids_definitions);
+        $container->set_alias('sylius.grid.renderer', 'sylius.grid.renderer.twig');
+        $container->set_alias('sylius.grid.bulk_action_renderer', 'sylius.grid.bulk_action_renderer.twig');
+        $container->set_alias('sylius.grid.data_extractor', 'sylius.grid.data_extractor.property_access');
+        if ($container::will_be_available('twig/twig', Environment::class, ['symfony/twig-bundle'])) {
             $loader->load('services/integrations/twig.php');
         }
-
-        if (\class_exists(SyliusCurrencyBundle::class)) {
+        if (\class_exists(Sylius_Currency_Bundle::class)) {
             $loader->load('services/integrations/sylius_currency_bundle.php');
         }
-
-        if (\class_exists(DoctrineBundle::class)) {
+        if (\class_exists(Doctrine_Bundle::class)) {
             $loader->load('services/integrations/doctrine/orm.php');
         }
-
-        if (\class_exists(DoctrinePHPCRBundle::class)) {
-            @trigger_error(sprintf(
-                'The "%s" driver is deprecated in Sylius 1.3. Doctrine PHPCR will no longer be supported in Sylius 2.0.',
-                SyliusGridBundle::DRIVER_DOCTRINE_PHPCR_ODM,
-            ), \E_USER_DEPRECATED);
+        if (\class_exists(Doctrine_Phpcr_Bundle::class)) {
+            @trigger_error(sprintf('The "%s" driver is deprecated in Sylius 1.3. Doctrine PHPCR will no longer be supported in Sylius 2.0.', Sylius_Grid_Bundle::DRIVER_DOCTRINE_PHPCR_ODM), \E_USER_DEPRECATED);
             $loader->load('services/integrations/doctrine/phpcr-odm.php');
         }
-
-        $container->registerForAutoconfiguration(GridInterface::class)
-            ->addTag('sylius.grid')
-        ;
-
-        $container->registerAttributeForAutoconfiguration(
-            AsFilter::class,
-            static function (ChildDefinition $definition, AsFilter $attribute, \ReflectionClass $reflector): void {
-                $definition->addTag(AsFilter::SERVICE_TAG, [
-                    'type' => $attribute->type ?? $reflector->getName(),
-                    'form_type' => $attribute->formType,
-                    'template' => $attribute->template,
-                ]);
-            },
-        );
-
-        $container->registerAttributeForAutoconfiguration(
-            AsField::class,
-            static function (ChildDefinition $definition, AsField $attribute, \ReflectionClass $reflector): void {
-                $definition->addTag(AsField::SERVICE_TAG, [
-                    'type' => $attribute->type ?? $reflector->getName(),
-                ]);
-            },
-        );
-
-        $container->registerForAutoconfiguration(ConfigurableFilterInterface::class)
-            ->addTag(AsFilter::SERVICE_TAG)
-        ;
-
-        $container->registerForAutoconfiguration(DataProviderInterface::class)
-            ->addTag('sylius.grid_data_provider')
-        ;
-
-        $container->registerAttributeForAutoconfiguration(
-            AsGridFieldCallableService::class,
-            static function (ChildDefinition $definition, AsGridFieldCallableService $attribute, \Reflector $reflector): void {
-                $definition->addTag('sylius.grid_field_callable_service');
-            },
-        );
+        $container->register_for_autoconfiguration(Grid_Interface::class)->add_tag('sylius.grid');
+        $container->register_attribute_for_autoconfiguration(As_Filter::class, static function (Child_Definition $definition, As_Filter $attribute, \ReflectionClass $reflector): void {
+            $definition->add_tag(As_Filter::SERVICE_TAG, ['type' => $attribute->type ?? $reflector->get_name(), 'form_type' => $attribute->form_type, 'template' => $attribute->template]);
+        });
+        $container->register_attribute_for_autoconfiguration(As_Field::class, static function (Child_Definition $definition, As_Field $attribute, \ReflectionClass $reflector): void {
+            $definition->add_tag(As_Field::SERVICE_TAG, ['type' => $attribute->type ?? $reflector->get_name()]);
+        });
+        $container->register_for_autoconfiguration(Configurable_Filter_Interface::class)->add_tag(As_Filter::SERVICE_TAG);
+        $container->register_for_autoconfiguration(Data_Provider_Interface::class)->add_tag('sylius.grid_data_provider');
+        $container->register_attribute_for_autoconfiguration(As_Grid_Field_Callable_Service::class, static function (Child_Definition $definition, As_Grid_Field_Callable_Service $attribute, \Reflector $reflector): void {
+            $definition->add_tag('sylius.grid_field_callable_service');
+        });
     }
-
     /**
      * @param array<int, mixed> $config
      */
-    public function getConfiguration(array $config, ContainerBuilder $container): Configuration
+    public function get_configuration(array $config, Container_Builder $container): Configuration
     {
         $configuration = new Configuration();
-
-        $container->addObjectResource($configuration);
-
+        $container->add_object_resource($configuration);
         return $configuration;
     }
 }

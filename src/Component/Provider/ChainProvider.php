@@ -8,15 +8,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Component\Grid\Provider;
 
 use Sylius\Component\Grid\Definition\Grid;
-use Sylius\Component\Grid\Exception\UndefinedGridException;
-
-final readonly class ChainProvider implements GridProviderInterface
+use Sylius\Component\Grid\Exception\Undefined_Grid_Exception;
+final readonly class Chain_Provider implements Grid_Provider_Interface
 {
     /**
      * @param iterable<GridProviderInterface> $providers
@@ -24,16 +21,14 @@ final readonly class ChainProvider implements GridProviderInterface
     public function __construct(private iterable $providers)
     {
     }
-
     public function get(string $code): Grid
     {
         foreach ($this->providers as $provider) {
             try {
                 return $provider->get($code);
-            } catch (UndefinedGridException) {
+            } catch (Undefined_Grid_Exception) {
             }
         }
-
-        throw new UndefinedGridException($code);
+        throw new Undefined_Grid_Exception($code);
     }
 }

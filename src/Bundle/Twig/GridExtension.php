@@ -8,28 +8,19 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+declare (strict_types=1);
+namespace Sylius\Bundle\Grid_Bundle\Twig;
 
-declare(strict_types=1);
-
-namespace Sylius\Bundle\GridBundle\Twig;
-
-use Sylius\Bundle\GridBundle\Templating\Helper\GridHelper;
-use Twig\Extension\AbstractExtension;
-use Twig\TwigFunction;
-
-final class GridExtension extends AbstractExtension
+use Sylius\Bundle\Grid_Bundle\Templating\Helper\Grid_Helper;
+use Twig\Extension\Abstract_Extension;
+use Twig\Twig_Function;
+final class Grid_Extension extends Abstract_Extension
 {
-    public function __construct(private readonly GridHelper $gridHelper)
+    public function __construct(private readonly Grid_Helper $grid_helper)
     {
     }
-
-    public function getFunctions(): array
+    public function get_functions(): array
     {
-        return [
-            new TwigFunction('sylius_grid_render', $this->gridHelper->renderGrid(...), ['is_safe' => ['html']]),
-            new TwigFunction('sylius_grid_render_field', $this->gridHelper->renderField(...), ['is_safe' => ['html']]),
-            new TwigFunction('sylius_grid_render_action', $this->gridHelper->renderAction(...), ['is_safe' => ['html']]),
-            new TwigFunction('sylius_grid_render_filter', $this->gridHelper->renderFilter(...), ['is_safe' => ['html']]),
-        ];
+        return [new Twig_Function('sylius_grid_render', $this->grid_helper->render_grid(...), ['is_safe' => ['html']]), new Twig_Function('sylius_grid_render_field', $this->grid_helper->render_field(...), ['is_safe' => ['html']]), new Twig_Function('sylius_grid_render_action', $this->grid_helper->render_action(...), ['is_safe' => ['html']]), new Twig_Function('sylius_grid_render_filter', $this->grid_helper->render_filter(...), ['is_safe' => ['html']])];
     }
 }

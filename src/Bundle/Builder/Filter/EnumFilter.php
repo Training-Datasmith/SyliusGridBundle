@@ -8,27 +8,21 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+declare (strict_types=1);
+namespace Sylius\Bundle\Grid_Bundle\Builder\Filter;
 
-declare(strict_types=1);
-
-namespace Sylius\Bundle\GridBundle\Builder\Filter;
-
-final class EnumFilter
+final class Enum_Filter
 {
-    public static function create(string $name, string $enumClass, ?bool $multiple = null, ?string $field = null): FilterInterface
+    public static function create(string $name, string $enum_class, ?bool $multiple = null, ?string $field = null): Filter_Interface
     {
         $filter = Filter::create($name, 'enum');
-
-        $filter->setFormOptions(['class' => $enumClass]);
-
+        $filter->set_form_options(['class' => $enum_class]);
         if (null !== $field) {
-            $filter->setOptions(['field' => $field]);
+            $filter->set_options(['field' => $field]);
         }
-
         if (null !== $multiple) {
-            $filter->addFormOption('multiple', $multiple);
+            $filter->add_form_option('multiple', $multiple);
         }
-
         return $filter;
     }
 }

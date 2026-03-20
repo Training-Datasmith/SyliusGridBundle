@@ -8,14 +8,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Component\Grid\Configuration;
 
 use Webmozart\Assert\Assert;
-
-final class GridConfigurationSortingHandler implements GridConfigurationSortingHandlerInterface
+final class Grid_Configuration_Sorting_Handler implements Grid_Configuration_Sorting_Handler_Interface
 {
     /**
      * @param array{
@@ -23,24 +20,20 @@ final class GridConfigurationSortingHandler implements GridConfigurationSortingH
      *        sorting?: array<string, string>,
      * } $gridConfiguration
      */
-    public function handle(array $gridConfiguration): array
+    public function handle(array $grid_configuration): array
     {
-        if (false === isset($gridConfiguration['sorting'])) {
-            return $gridConfiguration;
+        if (false === isset($grid_configuration['sorting'])) {
+            return $grid_configuration;
         }
-
-        foreach ($gridConfiguration['sorting'] as $sorting => $order) {
+        foreach ($grid_configuration['sorting'] as $sorting => $order) {
             /** @var array<string, mixed> $fields */
-            $fields = $gridConfiguration['fields'] ?? [];
-            Assert::keyExists($fields, $sorting);
-
-            if (isset($gridConfiguration['fields'][$sorting]['sortable'])) {
+            $fields = $grid_configuration['fields'] ?? [];
+            Assert::key_exists($fields, $sorting);
+            if (isset($grid_configuration['fields'][$sorting]['sortable'])) {
                 continue;
             }
-
-            $gridConfiguration['fields'][$sorting]['sortable'] = true;
+            $grid_configuration['fields'][$sorting]['sortable'] = true;
         }
-
-        return $gridConfiguration;
+        return $grid_configuration;
     }
 }

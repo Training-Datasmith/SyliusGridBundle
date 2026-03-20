@@ -8,33 +8,27 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+declare (strict_types=1);
+namespace Sylius\Bundle\Grid_Bundle\Dependency_Injection\Compiler;
 
-declare(strict_types=1);
-
-namespace Sylius\Bundle\GridBundle\DependencyInjection\Compiler;
-
-use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Reference;
-
-final class RegisterDriversPass implements CompilerPassInterface
+use Symfony\Component\Dependency_Injection\Compiler\Compiler_Pass_Interface;
+use Symfony\Component\Dependency_Injection\Container_Builder;
+use Symfony\Component\Dependency_Injection\Reference;
+final class Register_Drivers_Pass implements Compiler_Pass_Interface
 {
-    public function process(ContainerBuilder $container): void
+    public function process(Container_Builder $container): void
     {
-        if (!$container->hasDefinition('sylius.registry.grid_driver')) {
+        if (!$container->has_definition('sylius.registry.grid_driver')) {
             return;
         }
-
-        $registry = $container->findDefinition('sylius.registry.grid_driver');
-
+        $registry = $container->find_definition('sylius.registry.grid_driver');
         /** @var array<string, array<string, string>> $attributes */
-        foreach ($container->findTaggedServiceIds('sylius.grid_driver') as $id => $attributes) {
+        foreach ($container->find_tagged_service_ids('sylius.grid_driver') as $id => $attributes) {
             foreach ($attributes as $attribute) {
                 if (!isset($attribute['alias'])) {
                     throw new \InvalidArgumentException('Tagged grid drivers needs to have `alias` attribute.');
                 }
-
-                $registry->addMethodCall('register', [$attribute['alias'], new Reference($id)]);
+                $registry->add_method_call('register', [$attribute['alias'], new Reference($id)]);
             }
         }
     }

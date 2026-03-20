@@ -8,15 +8,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
-namespace Sylius\Component\Grid\FieldTypes;
+declare (strict_types=1);
+namespace Sylius\Component\Grid\Field_Types;
 
 use Sylius\Component\Grid\Definition\Field;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-
-interface FieldTypeInterface
+use Symfony\Component\Options_Resolver\Options_Resolver;
+interface Field_Type_Interface
 {
     /**
      * Return a HTML representation of the $field using the given $data and
@@ -27,9 +24,8 @@ interface FieldTypeInterface
      * @return string
      */
     public function render(Field $field, mixed $data, array $options);
-
     /**
      * Configure options for this field type.
      */
-    public function configureOptions(OptionsResolver $resolver): void;
+    public function configure_options(Options_Resolver $resolver): void;
 }

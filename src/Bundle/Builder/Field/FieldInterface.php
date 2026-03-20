@@ -8,70 +8,50 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+declare (strict_types=1);
+namespace Sylius\Bundle\Grid_Bundle\Builder\Field;
 
-declare(strict_types=1);
-
-namespace Sylius\Bundle\GridBundle\Builder\Field;
-
-interface FieldInterface
+interface Field_Interface
 {
     public static function create(string $name, string $type): self;
-
-    public function getName(): string;
-
-    public function getPath(): ?string;
-
-    public function setPath(?string $path): self;
-
-    public function getLabel(): ?string;
-
-    public function setLabel(?string $label): self;
-
-    public function isEnabled(): bool;
-
-    public function setEnabled(bool $enabled): self;
-
-    public function isSortable(): bool;
-
-    public function setSortable(bool $sortable, ?string $path = null): self;
-
-    public function getPosition(): ?int;
-
-    public function setPosition(?int $position): self;
-
+    public function get_name(): string;
+    public function get_path(): ?string;
+    public function set_path(?string $path): self;
+    public function get_label(): ?string;
+    public function set_label(?string $label): self;
+    public function is_enabled(): bool;
+    public function set_enabled(bool $enabled): self;
+    public function is_sortable(): bool;
+    public function set_sortable(bool $sortable, ?string $path = null): self;
+    public function get_position(): ?int;
+    public function set_position(?int $position): self;
     /**
      * @return array<string, mixed>
      */
-    public function getOptions(): array;
-
+    public function get_options(): array;
     /**
      * @param array<string, mixed> $options
      *
      * @deprecated use self::withOptions instead
      */
-    public function setOptions(array $options): self;
-
+    public function set_options(array $options): self;
     /**
      * @param array<string, mixed> $options
      *
      * @deprecated use self::withOptions instead
      */
-    public function addOptions(array $options): self;
-
+    public function add_options(array $options): self;
     /**
      * @param array<string, mixed> $options
      */
-    public function withOptions(array $options): self;
-
+    public function with_options(array $options): self;
     /**
      * @param mixed $value
      */
-    public function setOption(string $option, $value): self;
-
-    public function removeOption(string $option): self;
-
+    public function set_option(string $option, $value): self;
+    public function remove_option(string $option): self;
     /**
      * @return array<string, mixed>
      */
-    public function toArray(): array;
+    public function to_array(): array;
 }

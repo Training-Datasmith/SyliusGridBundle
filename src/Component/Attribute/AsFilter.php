@@ -8,23 +8,17 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Component\Grid\Attribute;
 
 #[\Attribute(\Attribute::TARGET_CLASS)]
-final readonly class AsFilter
+final readonly class As_Filter
 {
     public const SERVICE_TAG = 'sylius.grid_filter';
-
     /**
      * @param class-string $formType The form type class name to use for filter rendering
      */
-    public function __construct(
-        public string $formType,
-        public ?string $type = null,
-        public ?string $template = null,
-    ) {
+    public function __construct(public string $form_type, public ?string $type = null, public ?string $template = null)
+    {
     }
 }

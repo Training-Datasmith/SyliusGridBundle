@@ -8,22 +8,18 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Component\Grid\Configuration;
 
-final class GridConfigurationExtender implements GridConfigurationExtenderInterface
+final class Grid_Configuration_Extender implements Grid_Configuration_Extender_Interface
 {
-    public function extends(array $gridConfiguration, array $parentGridConfiguration): array
+    public function extends(array $grid_configuration, array $parent_grid_configuration): array
     {
-        unset($parentGridConfiguration['sorting']); // Do not inherit sorting.
-
+        unset($parent_grid_configuration['sorting']);
+        // Do not inherit sorting.
         /** @var array<string, mixed> $configuration */
-        $configuration = array_replace_recursive($parentGridConfiguration, $gridConfiguration) ?: [];
-
+        $configuration = array_replace_recursive($parent_grid_configuration, $grid_configuration) ?: [];
         unset($configuration['extends']);
-
         return $configuration;
     }
 }

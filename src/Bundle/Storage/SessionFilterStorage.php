@@ -8,40 +8,32 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+declare (strict_types=1);
+namespace Sylius\Bundle\Grid_Bundle\Storage;
 
-declare(strict_types=1);
-
-namespace Sylius\Bundle\GridBundle\Storage;
-
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
-
-final readonly class SessionFilterStorage implements FilterStorageInterface
+use Symfony\Component\Http_Foundation\Request_Stack;
+use Symfony\Component\Http_Foundation\Session\Session_Interface;
+final readonly class Session_Filter_Storage implements Filter_Storage_Interface
 {
-    public function __construct(private RequestStack $requestStack)
+    public function __construct(private Request_Stack $request_stack)
     {
     }
-
     public function set(array $filters): void
     {
-        $this->getSession()->set('filters', $filters);
+        $this->get_session()->set('filters', $filters);
     }
-
     public function all(): array
     {
         /** @var array<string, mixed> $all */
-        $all = $this->getSession()->all()['filters'] ?? [];
-
+        $all = $this->get_session()->all()['filters'] ?? [];
         return $all;
     }
-
-    public function hasFilters(): bool
+    public function has_filters(): bool
     {
-        return [] !== $this->getSession()->get('filters', []);
+        return [] !== $this->get_session()->get('filters', []);
     }
-
-    private function getSession(): SessionInterface
+    private function get_session(): Session_Interface
     {
-        return $this->requestStack->getSession();
+        return $this->request_stack->get_session();
     }
 }

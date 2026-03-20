@@ -8,29 +8,16 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+declare (strict_types=1);
+namespace Symfony\Component\Dependency_Injection\Loader\Configurator;
 
-declare(strict_types=1);
-
-namespace Symfony\Component\DependencyInjection\Loader\Configurator;
-
-use Sylius\Bundle\GridBundle\Templating\Helper\BulkActionGridHelper;
-use Sylius\Bundle\GridBundle\Templating\Helper\GridHelper;
-
-return static function (ContainerConfigurator $container): void {
+use Sylius\Bundle\Grid_Bundle\Templating\Helper\Bulk_Action_Grid_Helper;
+use Sylius\Bundle\Grid_Bundle\Templating\Helper\Grid_Helper;
+return static function (Container_Configurator $container): void {
     $services = $container->services();
-
-    $services->defaults()
-        ->public();
-
-    $services->set('sylius.templating.helper.grid', GridHelper::class)
-        ->lazy()
-        ->args([service('sylius.grid.renderer')]);
-
-    $services->alias(GridHelper::class, 'sylius.templating.helper.grid');
-
-    $services->set('sylius.templating.helper.bulk_action_grid', BulkActionGridHelper::class)
-        ->lazy()
-        ->args([service('sylius.grid.bulk_action_renderer')]);
-
-    $services->alias(BulkActionGridHelper::class, 'sylius.templating.helper.bulk_action_grid');
+    $services->defaults()->public();
+    $services->set('sylius.templating.helper.grid', Grid_Helper::class)->lazy()->args([service('sylius.grid.renderer')]);
+    $services->alias(Grid_Helper::class, 'sylius.templating.helper.grid');
+    $services->set('sylius.templating.helper.bulk_action_grid', Bulk_Action_Grid_Helper::class)->lazy()->args([service('sylius.grid.bulk_action_renderer')]);
+    $services->alias(Bulk_Action_Grid_Helper::class, 'sylius.templating.helper.bulk_action_grid');
 };

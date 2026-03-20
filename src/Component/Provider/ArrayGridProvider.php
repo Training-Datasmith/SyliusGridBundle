@@ -8,51 +8,42 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Component\Grid\Provider;
 
-use Sylius\Component\Grid\Configuration\GridConfigurationExtender;
-use Sylius\Component\Grid\Configuration\GridConfigurationExtenderInterface;
-use Sylius\Component\Grid\Configuration\GridConfigurationRemovalsHandler;
-use Sylius\Component\Grid\Configuration\GridConfigurationRemovalsHandlerInterface;
-use Sylius\Component\Grid\Configuration\GridConfigurationSortingHandler;
-use Sylius\Component\Grid\Configuration\GridConfigurationSortingHandlerInterface;
-use Sylius\Component\Grid\Definition\ArrayToDefinitionConverterInterface;
+use Sylius\Component\Grid\Configuration\Grid_Configuration_Extender;
+use Sylius\Component\Grid\Configuration\Grid_Configuration_Extender_Interface;
+use Sylius\Component\Grid\Configuration\Grid_Configuration_Removals_Handler;
+use Sylius\Component\Grid\Configuration\Grid_Configuration_Removals_Handler_Interface;
+use Sylius\Component\Grid\Configuration\Grid_Configuration_Sorting_Handler;
+use Sylius\Component\Grid\Configuration\Grid_Configuration_Sorting_Handler_Interface;
+use Sylius\Component\Grid\Definition\Array_To_Definition_Converter_Interface;
 use Sylius\Component\Grid\Definition\Grid;
-use Sylius\Component\Grid\Exception\UndefinedGridException;
+use Sylius\Component\Grid\Exception\Undefined_Grid_Exception;
 use Webmozart\Assert\Assert;
-
-final class ArrayGridProvider implements GridProviderInterface
+final class Array_Grid_Provider implements Grid_Provider_Interface
 {
     /**
      * @param array<string, array<string, mixed>> $gridConfigurations
      */
-    public function __construct(private readonly ArrayToDefinitionConverterInterface $converter, private array $gridConfigurations, private readonly ?GridConfigurationExtenderInterface $gridConfigurationExtender = new GridConfigurationExtender(), private readonly ?GridConfigurationRemovalsHandlerInterface $gridConfigurationRemovalsHandler = new GridConfigurationRemovalsHandler(), private readonly ?GridConfigurationSortingHandlerInterface $gridConfigurationSortingHandler = new GridConfigurationSortingHandler())
+    public function __construct(private readonly Array_To_Definition_Converter_Interface $converter, private array $grid_configurations, private readonly ?Grid_Configuration_Extender_Interface $grid_configuration_extender = new Grid_Configuration_Extender(), private readonly ?Grid_Configuration_Removals_Handler_Interface $grid_configuration_removals_handler = new Grid_Configuration_Removals_Handler(), private readonly ?Grid_Configuration_Sorting_Handler_Interface $grid_configuration_sorting_handler = new Grid_Configuration_Sorting_Handler())
     {
     }
-
     public function get(string $code): Grid
     {
-        if (!array_key_exists($code, $this->gridConfigurations)) {
-            throw new UndefinedGridException($code);
+        if (!array_key_exists($code, $this->grid_configurations)) {
+            throw new Undefined_Grid_Exception($code);
         }
-
-        $gridConfiguration = $this->gridConfigurations[$code];
+        $grid_configuration = $this->grid_configurations[$code];
         /** @var string|null $parentGridCode */
-        $parentGridCode = $gridConfiguration['extends'] ?? null;
-
-        if (null !== $parentGridCode) {
-            $parentGridConfiguration = $this->gridConfigurations[$parentGridCode] ?? null;
-
-            Assert::notNull($parentGridConfiguration, sprintf('Parent grid with code "%s" does not exists.', $parentGridCode));
-            $gridConfiguration = $this->gridConfigurationExtender->extends($gridConfiguration, $parentGridConfiguration);
+        $parent_grid_code = $grid_configuration['extends'] ?? null;
+        if (null !== $parent_grid_code) {
+            $parent_grid_configuration = $this->grid_configurations[$parent_grid_code] ?? null;
+            Assert::not_null($parent_grid_configuration, sprintf('Parent grid with code "%s" does not exists.', $parent_grid_code));
+            $grid_configuration = $this->grid_configuration_extender->extends($grid_configuration, $parent_grid_configuration);
         }
-
-        $gridConfiguration = $this->gridConfigurationRemovalsHandler->handle($gridConfiguration);
-        $gridConfiguration = $this->gridConfigurationSortingHandler->handle($gridConfiguration);
-
-        return $this->converter->convert($code, $gridConfiguration);
+        $grid_configuration = $this->grid_configuration_removals_handler->handle($grid_configuration);
+        $grid_configuration = $this->grid_configuration_sorting_handler->handle($grid_configuration);
+        return $this->converter->convert($code, $grid_configuration);
     }
 }

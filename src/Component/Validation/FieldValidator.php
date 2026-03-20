@@ -8,21 +8,17 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Component\Grid\Validation;
 
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-
-final class FieldValidator implements FieldValidatorInterface
+use Symfony\Component\Http_Kernel\Exception\Bad_Request_Http_Exception;
+final class Field_Validator implements Field_Validator_Interface
 {
-    public function validateFieldName(string $fieldName, array $enabledFields): void
+    public function validate_field_name(string $field_name, array $enabled_fields): void
     {
-        $enabledFieldsNames = array_keys($enabledFields);
-
-        if (!in_array($fieldName, $enabledFieldsNames, true)) {
-            throw new BadRequestHttpException(sprintf('%s is not valid field, did you mean one of these: %s?', $fieldName, implode(', ', $enabledFieldsNames)));
+        $enabled_fields_names = array_keys($enabled_fields);
+        if (!in_array($field_name, $enabled_fields_names, true)) {
+            throw new Bad_Request_Http_Exception(sprintf('%s is not valid field, did you mean one of these: %s?', $field_name, implode(', ', $enabled_fields_names)));
         }
     }
 }

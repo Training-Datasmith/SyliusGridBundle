@@ -8,14 +8,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
-namespace Sylius\Component\Grid\DataExtractor;
+declare (strict_types=1);
+namespace Sylius\Component\Grid\Data_Extractor;
 
 use Sylius\Component\Grid\Definition\Field;
-
-interface DataExtractorInterface
+interface Data_Extractor_Interface
 {
     /**
      * @param mixed $data

@@ -8,33 +8,27 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+declare (strict_types=1);
+namespace Sylius\Bundle\Grid_Bundle\Dependency_Injection\Compiler;
 
-declare(strict_types=1);
-
-namespace Sylius\Bundle\GridBundle\DependencyInjection\Compiler;
-
-use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Reference;
-
-final class RegisterFieldTypesPass implements CompilerPassInterface
+use Symfony\Component\Dependency_Injection\Compiler\Compiler_Pass_Interface;
+use Symfony\Component\Dependency_Injection\Container_Builder;
+use Symfony\Component\Dependency_Injection\Reference;
+final class Register_Field_Types_Pass implements Compiler_Pass_Interface
 {
-    public function process(ContainerBuilder $container): void
+    public function process(Container_Builder $container): void
     {
-        if (!$container->hasDefinition('sylius.registry.grid_field')) {
+        if (!$container->has_definition('sylius.registry.grid_field')) {
             return;
         }
-
-        $registry = $container->getDefinition('sylius.registry.grid_field');
-
+        $registry = $container->get_definition('sylius.registry.grid_field');
         /** @var array<string, array<string, string>> $attributes */
-        foreach ($container->findTaggedServiceIds('sylius.grid_field') as $id => $attributes) {
+        foreach ($container->find_tagged_service_ids('sylius.grid_field') as $id => $attributes) {
             foreach ($attributes as $attribute) {
                 if (!isset($attribute['type'])) {
                     throw new \InvalidArgumentException('Tagged grid fields needs to have `type` attribute.');
                 }
-
-                $registry->addMethodCall('register', [$attribute['type'], new Reference($id)]);
+                $registry->add_method_call('register', [$attribute['type'], new Reference($id)]);
             }
         }
     }

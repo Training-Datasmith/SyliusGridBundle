@@ -8,16 +8,13 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+declare (strict_types=1);
+namespace Sylius\Bundle\Grid_Bundle\Builder;
 
-declare(strict_types=1);
-
-namespace Sylius\Bundle\GridBundle\Builder;
-
-use Sylius\Bundle\GridBundle\Builder\Action\ActionInterface;
-use Sylius\Bundle\GridBundle\Builder\ActionGroup\ActionGroupInterface;
-use Sylius\Bundle\GridBundle\Builder\Field\FieldInterface;
-use Sylius\Bundle\GridBundle\Builder\Filter\FilterInterface;
-
+use Sylius\Bundle\Grid_Bundle\Builder\Action\Action_Interface;
+use Sylius\Bundle\Grid_Bundle\Builder\Action_Group\Action_Group_Interface;
+use Sylius\Bundle\Grid_Bundle\Builder\Field\Field_Interface;
+use Sylius\Bundle\Grid_Bundle\Builder\Filter\Filter_Interface;
 /**
  * @method string|callable|null getProvider()
  * @method GridBuilderInterface setProvider(string|callable|null $provider)
@@ -27,54 +24,37 @@ use Sylius\Bundle\GridBundle\Builder\Filter\FilterInterface;
  * @psalm-method string|callable|null getProvider()
  * @psalm-method GridBuilderInterface setProvider(string|callable|null $provider)
  */
-interface GridBuilderInterface
+interface Grid_Builder_Interface
 {
-    public static function create(string $name, ?string $resourceClass = null): self;
-
-    public function getName(): string;
-
-    public function setDriver(string $driver): self;
-
+    public static function create(string $name, ?string $resource_class = null): self;
+    public function get_name(): string;
+    public function set_driver(string $driver): self;
     /**
      * @param mixed $value
      */
-    public function setDriverOption(string $option, $value): self;
-
+    public function set_driver_option(string $option, $value): self;
     /**
      * @param string|callable|mixed[] $method
      * @param mixed[] $arguments
      */
-    public function setRepositoryMethod($method, array $arguments = []): self;
-
-    public function addField(FieldInterface $field): self;
-
-    public function removeField(string $name): self;
-
-    public function orderBy(string $name, string $direction): self;
-
-    public function addOrderBy(string $name, string $direction = 'asc'): self;
-
+    public function set_repository_method($method, array $arguments = []): self;
+    public function add_field(Field_Interface $field): self;
+    public function remove_field(string $name): self;
+    public function order_by(string $name, string $direction): self;
+    public function add_order_by(string $name, string $direction = 'asc'): self;
     /**
      * @param int[] $limits
      */
-    public function setLimits(array $limits): self;
-
-    public function addFilter(FilterInterface $filter): self;
-
-    public function removeFilter(string $name): self;
-
-    public function addActionGroup(ActionGroupInterface $actionGroup): self;
-
-    public function removeActionGroup(string $name): self;
-
-    public function addAction(ActionInterface $action, string $group): self;
-
-    public function removeAction(string $name, string $group): self;
-
-    public function extends(string $gridName): self;
-
+    public function set_limits(array $limits): self;
+    public function add_filter(Filter_Interface $filter): self;
+    public function remove_filter(string $name): self;
+    public function add_action_group(Action_Group_Interface $action_group): self;
+    public function remove_action_group(string $name): self;
+    public function add_action(Action_Interface $action, string $group): self;
+    public function remove_action(string $name, string $group): self;
+    public function extends(string $grid_name): self;
     /**
      * @return array<string, mixed>
      */
-    public function toArray(): array;
+    public function to_array(): array;
 }

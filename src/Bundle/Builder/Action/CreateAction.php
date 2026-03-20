@@ -8,22 +8,19 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+declare (strict_types=1);
+namespace Sylius\Bundle\Grid_Bundle\Builder\Action;
 
-declare(strict_types=1);
-
-namespace Sylius\Bundle\GridBundle\Builder\Action;
-
-final class CreateAction
+final class Create_Action
 {
     /**
      * @param array<string, mixed> $options
      */
-    public static function create(array $options = []): ActionInterface
+    public static function create(array $options = []): Action_Interface
     {
         $action = Action::create('create', 'create');
-        $action->setLabel('sylius.ui.create');
-        $action->setOptions($options);
-
+        $action->set_label('sylius.ui.create');
+        $action->set_options($options);
         return $action;
     }
 }

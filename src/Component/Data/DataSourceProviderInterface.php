@@ -8,15 +8,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Component\Grid\Data;
 
 use Sylius\Component\Grid\Definition\Grid;
 use Sylius\Component\Grid\Parameters;
-
-interface DataSourceProviderInterface
+interface Data_Source_Provider_Interface
 {
-    public function getDataSource(Grid $grid, Parameters $parameters): DataSourceInterface;
+    public function get_data_source(Grid $grid, Parameters $parameters): Data_Source_Interface;
 }

@@ -8,18 +8,14 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Component\Grid\Attribute;
 
 #[\Attribute(\Attribute::TARGET_CLASS)]
-final readonly class AsField
+final readonly class As_Field
 {
     public const SERVICE_TAG = 'sylius.grid_field';
-
-    public function __construct(
-        public ?string $type = null,
-    ) {
+    public function __construct(public ?string $type = null)
+    {
     }
 }

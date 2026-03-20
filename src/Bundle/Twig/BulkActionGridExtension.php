@@ -8,29 +8,19 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+declare (strict_types=1);
+namespace Sylius\Bundle\Grid_Bundle\Twig;
 
-declare(strict_types=1);
-
-namespace Sylius\Bundle\GridBundle\Twig;
-
-use Sylius\Bundle\GridBundle\Templating\Helper\BulkActionGridHelper;
-use Twig\Extension\AbstractExtension;
-use Twig\TwigFunction;
-
-final class BulkActionGridExtension extends AbstractExtension
+use Sylius\Bundle\Grid_Bundle\Templating\Helper\Bulk_Action_Grid_Helper;
+use Twig\Extension\Abstract_Extension;
+use Twig\Twig_Function;
+final class Bulk_Action_Grid_Extension extends Abstract_Extension
 {
-    public function __construct(private readonly BulkActionGridHelper $bulkActionGridHelper)
+    public function __construct(private readonly Bulk_Action_Grid_Helper $bulk_action_grid_helper)
     {
     }
-
-    public function getFunctions(): array
+    public function get_functions(): array
     {
-        return [
-            new TwigFunction(
-                'sylius_grid_render_bulk_action',
-                $this->bulkActionGridHelper->renderBulkAction(...),
-                ['is_safe' => ['html']],
-            ),
-        ];
+        return [new Twig_Function('sylius_grid_render_bulk_action', $this->bulk_action_grid_helper->render_bulk_action(...), ['is_safe' => ['html']])];
     }
 }

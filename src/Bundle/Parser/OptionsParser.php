@@ -8,49 +8,37 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
-namespace Sylius\Bundle\GridBundle\Parser;
+declare (strict_types=1);
+namespace Sylius\Bundle\Grid_Bundle\Parser;
 
 use Sylius\Component\Grid\Exception\InvalidArgumentException;
-
-final class OptionsParser implements OptionsParserInterface
+final class Options_Parser implements Options_Parser_Interface
 {
-    public function parseOptions(array $parameters): array
+    public function parse_options(array $parameters): array
     {
-        return array_map(
-            function (mixed $parameter): mixed {
-                if (is_array($parameter)) {
-                    /** @var array<string, mixed> $parameter */
-                    return $this->parseOptions($parameter);
-                }
-
-                return $this->parseOption($parameter);
-            },
-            $parameters,
-        );
+        return array_map(function (mixed $parameter): mixed {
+            if (is_array($parameter)) {
+                /** @var array<string, mixed> $parameter */
+                return $this->parse_options($parameter);
+            }
+            return $this->parse_option($parameter);
+        }, $parameters);
     }
-
-    private function parseOption(mixed $parameter): mixed
+    private function parse_option(mixed $parameter): mixed
     {
         if (!is_string($parameter)) {
             return $parameter;
         }
-
         if (str_starts_with($parameter, 'callable:')) {
-            return $this->parseOptionCallable(substr($parameter, 9));
+            return $this->parse_option_callable(substr($parameter, 9));
         }
-
         return $parameter;
     }
-
-    private function parseOptionCallable(string $callable): \Closure
+    private function parse_option_callable(string $callable): \Closure
     {
         if (!is_callable($callable)) {
             throw new InvalidArgumentException(\sprintf('%s is not a callable.', $callable));
         }
-
         return $callable(...);
     }
 }

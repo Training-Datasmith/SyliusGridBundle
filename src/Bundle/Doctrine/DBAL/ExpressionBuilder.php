@@ -8,133 +8,106 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+declare (strict_types=1);
+namespace Sylius\Bundle\Grid_Bundle\Doctrine\DBAL;
 
-declare(strict_types=1);
-
-namespace Sylius\Bundle\GridBundle\Doctrine\DBAL;
-
-use Doctrine\DBAL\Query\Expression\CompositeExpression;
-use Doctrine\DBAL\Query\QueryBuilder;
-use Sylius\Component\Grid\Data\ExpressionBuilderInterface;
-
-final readonly class ExpressionBuilder implements ExpressionBuilderInterface
+use Doctrine\DBAL\Query\Expression\Composite_Expression;
+use Doctrine\DBAL\Query\Query_Builder;
+use Sylius\Component\Grid\Data\Expression_Builder_Interface;
+final readonly class Expression_Builder implements Expression_Builder_Interface
 {
-    private QueryBuilder $queryBuilder;
-
-    public function __construct(QueryBuilder $queryBuilder)
+    private Query_Builder $query_builder;
+    public function __construct(Query_Builder $query_builder)
     {
-        $this->queryBuilder = $queryBuilder;
+        $this->query_builder = $query_builder;
     }
-
     /**
      * @param CompositeExpression|string ...$expressions
      */
-    public function andX(...$expressions)
+    public function and_x(...$expressions)
     {
-        return $this->queryBuilder->expr()->and(...$expressions);
+        return $this->query_builder->expr()->and(...$expressions);
     }
-
     /**
      * @param CompositeExpression|string ...$expressions
      */
-    public function orX(...$expressions)
+    public function or_x(...$expressions)
     {
-        return $this->queryBuilder->expr()->or(...$expressions);
+        return $this->query_builder->expr()->or(...$expressions);
     }
-
     /**
      * @param string $value
      */
     public function comparison(string $field, string $operator, $value)
     {
-        return $this->queryBuilder->expr()->comparison($field, $operator, $value);
+        return $this->query_builder->expr()->comparison($field, $operator, $value);
     }
-
     public function equals(string $field, $value)
     {
-        $this->queryBuilder->setParameter($field, $value);
-
-        return $this->queryBuilder->expr()->eq($field, ':' . $field);
+        $this->query_builder->set_parameter($field, $value);
+        return $this->query_builder->expr()->eq($field, ':' . $field);
     }
-
-    public function notEquals(string $field, $value)
+    public function not_equals(string $field, $value)
     {
-        $this->queryBuilder->setParameter($field, $value);
-
-        return $this->queryBuilder->expr()->neq($field, ':' . $field);
+        $this->query_builder->set_parameter($field, $value);
+        return $this->query_builder->expr()->neq($field, ':' . $field);
     }
-
-    public function lessThan(string $field, $value)
+    public function less_than(string $field, $value)
     {
-        $this->queryBuilder->setParameter($field, $value);
-
-        return $this->queryBuilder->expr()->lt($field, ':' . $field);
+        $this->query_builder->set_parameter($field, $value);
+        return $this->query_builder->expr()->lt($field, ':' . $field);
     }
-
-    public function lessThanOrEqual(string $field, $value)
+    public function less_than_or_equal(string $field, $value)
     {
-        $this->queryBuilder->setParameter($field, $value);
-
-        return $this->queryBuilder->expr()->lte($field, ':' . $field);
+        $this->query_builder->set_parameter($field, $value);
+        return $this->query_builder->expr()->lte($field, ':' . $field);
     }
-
-    public function greaterThan(string $field, $value)
+    public function greater_than(string $field, $value)
     {
-        $this->queryBuilder->setParameter($field, $value);
-
-        return $this->queryBuilder->expr()->gt($field, ':' . $field);
+        $this->query_builder->set_parameter($field, $value);
+        return $this->query_builder->expr()->gt($field, ':' . $field);
     }
-
-    public function greaterThanOrEqual(string $field, $value)
+    public function greater_than_or_equal(string $field, $value)
     {
-        $this->queryBuilder->setParameter($field, $value);
-
-        return $this->queryBuilder->expr()->gte($field, ':' . $field);
+        $this->query_builder->set_parameter($field, $value);
+        return $this->query_builder->expr()->gte($field, ':' . $field);
     }
-
     /**
      * @param string[] $values
      */
     public function in(string $field, array $values)
     {
-        return $this->queryBuilder->expr()->in($field, $values);
+        return $this->query_builder->expr()->in($field, $values);
     }
-
     /**
      * @param string[] $values
      */
-    public function notIn(string $field, array $values)
+    public function not_in(string $field, array $values)
     {
-        return $this->queryBuilder->expr()->notIn($field, $values);
+        return $this->query_builder->expr()->not_in($field, $values);
     }
-
-    public function isNull(string $field)
+    public function is_null(string $field)
     {
-        return $this->queryBuilder->expr()->isNull($field);
+        return $this->query_builder->expr()->is_null($field);
     }
-
-    public function isNotNull(string $field)
+    public function is_not_null(string $field)
     {
-        return $this->queryBuilder->expr()->isNotNull($field);
+        return $this->query_builder->expr()->is_not_null($field);
     }
-
     public function like(string $field, string $pattern)
     {
-        return $this->queryBuilder->expr()->like($field, $this->queryBuilder->expr()->literal($pattern));
+        return $this->query_builder->expr()->like($field, $this->query_builder->expr()->literal($pattern));
     }
-
-    public function notLike(string $field, string $pattern)
+    public function not_like(string $field, string $pattern)
     {
-        return $this->queryBuilder->expr()->notLike($field, $this->queryBuilder->expr()->literal($pattern));
+        return $this->query_builder->expr()->not_like($field, $this->query_builder->expr()->literal($pattern));
     }
-
-    public function orderBy(string $field, string $direction)
+    public function order_by(string $field, string $direction)
     {
-        return $this->queryBuilder->orderBy($field, $direction);
+        return $this->query_builder->order_by($field, $direction);
     }
-
-    public function addOrderBy(string $field, string $direction)
+    public function add_order_by(string $field, string $direction)
     {
-        return $this->queryBuilder->addOrderBy($field, $direction);
+        return $this->query_builder->add_order_by($field, $direction);
     }
 }

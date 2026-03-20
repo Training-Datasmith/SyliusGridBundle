@@ -8,17 +8,14 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Component\Grid\Validation;
 
 use Sylius\Component\Grid\Definition\Field;
-
-interface FieldValidatorInterface
+interface Field_Validator_Interface
 {
     /**
      * @param array<string, Field> $enabledFields
      */
-    public function validateFieldName(string $fieldName, array $enabledFields): void;
+    public function validate_field_name(string $field_name, array $enabled_fields): void;
 }

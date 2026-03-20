@@ -8,12 +8,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Component\Grid\Filtering;
 
-interface TypeAwareFilterInterface
+interface Type_Aware_Filter_Interface
 {
-    public static function getType(): string;
+    public static function get_type(): string;
 }

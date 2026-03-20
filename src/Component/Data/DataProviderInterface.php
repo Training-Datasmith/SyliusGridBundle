@@ -8,18 +8,15 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Component\Grid\Data;
 
 use Sylius\Component\Grid\Definition\Grid;
 use Sylius\Component\Grid\Parameters;
-
-interface DataProviderInterface
+interface Data_Provider_Interface
 {
     /**
      * @return mixed
      */
-    public function getData(Grid $grid, Parameters $parameters);
+    public function get_data(Grid $grid, Parameters $parameters);
 }

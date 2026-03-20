@@ -8,17 +8,15 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Component\Grid\Configuration;
 
-interface GridConfigurationRemovalsHandlerInterface
+interface Grid_Configuration_Removals_Handler_Interface
 {
     /**
      * @param array<string, mixed> $gridConfiguration
      *
      * @return array<string, mixed>
      */
-    public function handle(array $gridConfiguration): array;
+    public function handle(array $grid_configuration): array;
 }

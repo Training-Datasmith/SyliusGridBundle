@@ -8,22 +8,19 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+declare (strict_types=1);
+namespace Sylius\Bundle\Grid_Bundle\Builder\Action;
 
-declare(strict_types=1);
-
-namespace Sylius\Bundle\GridBundle\Builder\Action;
-
-final class DeleteAction
+final class Delete_Action
 {
     /**
      * @param array<string, mixed> $options
      */
-    public static function create(array $options = []): ActionInterface
+    public static function create(array $options = []): Action_Interface
     {
         $action = Action::create('delete', 'delete');
-        $action->setLabel('sylius.ui.delete');
-        $action->setOptions($options);
-
+        $action->set_label('sylius.ui.delete');
+        $action->set_options($options);
         return $action;
     }
 }

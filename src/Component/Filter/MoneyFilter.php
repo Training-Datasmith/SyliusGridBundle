@@ -8,20 +8,15 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Component\Grid\Filter;
 
-use Sylius\Component\Grid\Data\DataSourceInterface;
-use Sylius\Component\Grid\Filtering\FilterInterface;
-
-\trigger_deprecation('sylius/grid', '1.8', '%s is deprecated, replace it with your own implementation.', MoneyFilter::class);
-
-final class MoneyFilter implements FilterInterface
+use Sylius\Component\Grid\Data\Data_Source_Interface;
+use Sylius\Component\Grid\Filtering\Filter_Interface;
+\trigger_deprecation('sylius/grid', '1.8', '%s is deprecated, replace it with your own implementation.', Money_Filter::class);
+final class Money_Filter implements Filter_Interface
 {
     public const DEFAULT_SCALE = 2;
-
     /**
      * @param array{
      *     field?: string,
@@ -34,34 +29,29 @@ final class MoneyFilter implements FilterInterface
      *     currency?: string,
      * }|empty $data
      */
-    public function apply(DataSourceInterface $dataSource, string $name, $data, array $options): void
+    public function apply(Data_Source_Interface $data_source, string $name, $data, array $options): void
     {
         if (empty($data)) {
             return;
         }
-
         $field = $options['field'] ?? $name;
         $scale = (int) ($options['scale'] ?? self::DEFAULT_SCALE);
-
-        $greaterThan = $data['greaterThan'] ?? '';
-        $lessThan = $data['lessThan'] ?? '';
-
-        $expressionBuilder = $dataSource->getExpressionBuilder();
-
+        $greater_than = $data['greaterThan'] ?? '';
+        $less_than = $data['lessThan'] ?? '';
+        $expression_builder = $data_source->get_expression_builder();
         if (!empty($data['currency'])) {
-            $currencyField = $options['currency_field'];
-            $dataSource->restrict($expressionBuilder->equals($currencyField, $data['currency']));
+            $currency_field = $options['currency_field'];
+            $data_source->restrict($expression_builder->equals($currency_field, $data['currency']));
         }
-        if ('' !== $greaterThan) {
-            $dataSource->restrict($expressionBuilder->greaterThan($field, $this->normalizeAmount((float) $greaterThan, $scale)));
+        if ('' !== $greater_than) {
+            $data_source->restrict($expression_builder->greater_than($field, $this->normalize_amount((float) $greater_than, $scale)));
         }
-        if ('' !== $lessThan) {
-            $dataSource->restrict($expressionBuilder->lessThan($field, $this->normalizeAmount((float) $lessThan, $scale)));
+        if ('' !== $less_than) {
+            $data_source->restrict($expression_builder->less_than($field, $this->normalize_amount((float) $less_than, $scale)));
         }
     }
-
-    private function normalizeAmount(float $amount, int $scale): int
+    private function normalize_amount(float $amount, int $scale): int
     {
-        return (int) round($amount * (10 ** $scale));
+        return (int) round($amount * 10 ** $scale);
     }
 }

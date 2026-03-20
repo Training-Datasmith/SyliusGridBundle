@@ -8,17 +8,14 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Component\Grid\Data;
 
 use Sylius\Component\Grid\Parameters;
-
-interface DriverInterface
+interface Driver_Interface
 {
     /**
      * @param array<string, mixed> $configuration
      */
-    public function getDataSource(array $configuration, Parameters $parameters): DataSourceInterface;
+    public function get_data_source(array $configuration, Parameters $parameters): Data_Source_Interface;
 }

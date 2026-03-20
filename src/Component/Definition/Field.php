@@ -8,118 +8,94 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Component\Grid\Definition;
 
 class Field
 {
     private string $path;
-
     private string $label;
-
     private bool $enabled = true;
-
     private ?string $sortable = null;
-
     /** @var array<string, mixed> */
     private array $options = [];
-
     /**
      * Position equals to 100 to ensure that wile sorting fields by position ASC
      * the fields positioned by default will be last
      */
     private int $position = 100;
-
     private function __construct(private readonly string $name, private readonly string $type)
     {
         $this->path = $this->name;
         $this->label = $this->name;
     }
-
-    public static function fromNameAndType(string $name, string $type): self
+    public static function from_name_and_type(string $name, string $type): self
     {
         return new self($name, $type);
     }
-
-    public function getName(): string
+    public function get_name(): string
     {
         return $this->name;
     }
-
-    public function getType(): string
+    public function get_type(): string
     {
         return $this->type;
     }
-
-    public function getPath(): string
+    public function get_path(): string
     {
         return $this->path;
     }
-
-    public function setPath(string $path): void
+    public function set_path(string $path): void
     {
         $this->path = $path;
     }
-
-    public function getLabel(): string
+    public function get_label(): string
     {
         return $this->label;
     }
-
-    public function setLabel(string $label): void
+    public function set_label(string $label): void
     {
         $this->label = $label;
     }
-
-    public function isEnabled(): bool
+    public function is_enabled(): bool
     {
         return $this->enabled;
     }
-
-    public function setEnabled(bool $enabled): void
+    public function set_enabled(bool $enabled): void
     {
         $this->enabled = $enabled;
     }
-
-    public function setSortable(?string $sortable): void
+    public function set_sortable(?string $sortable): void
     {
         $this->sortable = $sortable;
     }
-
-    public function getSortable(): ?string
+    public function get_sortable(): ?string
     {
         return $this->sortable;
     }
-
-    public function isSortable(): bool
+    public function is_sortable(): bool
     {
         return null !== $this->sortable;
     }
-
     /**
      * @return array<string, mixed>
      */
-    public function getOptions(): array
+    public function get_options(): array
     {
         return $this->options;
     }
-
     /**
      * @param array<string, mixed> $options
      */
-    public function setOptions(array $options): void
+    public function set_options(array $options): void
     {
         $this->options = $options;
     }
-
-    public function getPosition(): int
+    public function get_position(): int
     {
         return $this->position;
     }
-
-    public function setPosition(int $position): void
+    public function set_position(int $position): void
     {
         $this->position = $position;
     }
