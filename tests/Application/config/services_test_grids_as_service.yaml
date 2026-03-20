@@ -5,7 +5,7 @@ services:
         bind:
             $authorClass: 'App\Entity\Author'
 
-    App\QueryBuilder\EnglishBooksQueryBuilder: null
+    App\Query_Builder\English_Books_Query_Builder: null
 
     App\Grid\:
         resource: '../src/Grid'

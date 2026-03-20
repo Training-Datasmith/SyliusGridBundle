@@ -47,7 +47,7 @@ App\Entity\Price:
         amount: 1000
         currencyCode: "GBP"
 
-App\Entity\AdminUser:
+App\Entity\Admin_User:
     user_1:
         username: "<firstName()><lastName()>"
         status: "active"

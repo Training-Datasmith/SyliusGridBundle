@@ -86,7 +86,7 @@ sylius_grid:
                 nationality:
                     type: callable
                     options:
-                        service: 'App\Helper\GridHelper'
+                        service: 'App\Helper\Grid_Helper'
                         method: 'formatNationality'
                     label: Name
                     sortable: nationality.name
@@ -214,14 +214,14 @@ sylius_grid:
             driver:
                 name: doctrine/orm
                 options:
-                    class: App\Entity\AdminUser
+                    class: App\Entity\Admin_User
             filters:
                 username:
                     type: string
                 status:
                     type: enum
                     form_options:
-                        class: App\Enum\AdminUserStatusEnum
+                        class: App\Enum\Admin_User_Status_Enum
                         multiple: true
             fields:
                 username:
