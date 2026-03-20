@@ -105,14 +105,14 @@
     },
     "autoload": {
         "psr-4": {
-            "Sylius\\Bundle\\GridBundle\\": "src/Bundle/",
+            "Sylius\\Bundle\\Grid_Bundle\\": "src/Bundle/",
             "Sylius\\Component\\Grid\\": "src/Component/"
         }
     },
     "autoload-dev": {
         "psr-4": {
             "App\\": "tests/Application/src/",
-            "AppBundle\\": "src/Bundle/test/src/AppBundle/",
+            "App_Bundle\\": "src/Bundle/test/src/AppBundle/",
             "App\\Tests\\Tmp\\": "tests/Application/tmp/"
         }
     },
